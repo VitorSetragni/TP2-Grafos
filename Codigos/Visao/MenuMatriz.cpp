@@ -3,8 +3,8 @@
 #include <string>
 
 #include "../EstruturaDeDados/Matriz/GrafoMatriz.cpp"
-#include "../libs/io.hpp"
-#include "MyIO.hpp"
+#include "../libs/io/io.hpp"
+#include "../libs/io/MyIO.hpp"
 
 using namespace std;
 

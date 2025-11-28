@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <limits>
+#include <string>
 
 using namespace std;
+
+
 
 int lerInteiro(const string& mensagem, const int limiteInferior, const int limiteSuperior) {
     bool controle = true;
@@ -39,6 +42,30 @@ int lerInteiro(const string& mensagem, const int limiteInferior, const int limit
 
         // Descartar o restante da linha de entrada inválida do buffer
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+    return numero;
+}
+
+// --- Ler Double (Novo) ---
+double lerDouble(const string& mensagem) {
+    bool controle = true;
+    double numero;
+
+    while (controle) {
+        cout << mensagem;
+        cin >> numero;
+
+        // Verifica se a entrada é um número válido
+        if (cin.fail()) {
+            cout << "[ERRO]: Entrada inválida. Por favor, digite um número decimal (use ponto, ex: 0.5).\n";
+            cin.clear(); // Limpa o estado de erro
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpa o buffer de entrada
+        } else {
+            controle = false;
+            // Limpa o buffer caso o usuário digite algo como "2.5 abc"
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
     }
 
     return numero;
@@ -99,5 +126,8 @@ string lerRotulo(const string& mensagem) {
     return rotulo;
 }
 
+string lerString(const string& mensagem) {
+    return lerRotulo(mensagem);
+}
 
 #endif

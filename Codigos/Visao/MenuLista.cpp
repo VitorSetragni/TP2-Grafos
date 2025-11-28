@@ -2,8 +2,8 @@
 #include <string>
 
 #include "../EstruturaDeDados/Lista/GrafoLista.cpp"
-#include "../libs/io.hpp"
-#include "MyIO.hpp"
+#include "../libs/io/io.hpp"
+#include "../libs/io/MyIO.hpp"
 
 using namespace std;
 #define maxVertice 2147483647
