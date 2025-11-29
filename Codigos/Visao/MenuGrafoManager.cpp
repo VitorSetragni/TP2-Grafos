@@ -1,9 +1,8 @@
 #include <iostream>
 #include <string>
 
-#include "./Visao/MenuLista.cpp"
-#include "./Visao/MenuMatriz.cpp"
-#include "./libs/io/io.hpp"
+#include "../Visao/MenuLista.hpp"
+#include "../Visao/MenuMatriz.hpp"
 
 using namespace std;
 
