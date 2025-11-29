@@ -8,10 +8,10 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
 # Nome do executável
-TARGET = programa
+TARGET = bin/programa
 
 # Diretório onde os .o serão armazenados
-OBJDIR = obj
+OBJDIR = build/obj
 
 # Lista automática de todos os .cpp no projeto
 SRCS := $(shell find . -name "*.cpp")
