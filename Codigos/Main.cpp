@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
         int opcaoPrincipal = 0;
 
         cout << "---------------------------------------------" << endl;
-        cout << "--- Bem vindo aos TPs de Teoria dos Grafos ---" << endl;
+        cout << "--- Bem vindo aos TPs de Teoria dos Grafos ---"<< endl;
         cout << "---------------------------------------------" << endl;
         cout << "--------------- Integrantes: ----------------" << endl
              << "---------- Augusto Stambassi Duarte ---------" << endl
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
              << "------------- João Pedro Torres -------------" << endl
              << "------------ Vitor Leite Setragni -----------" << endl;
         cout << "---------------------------------------------" << endl;
-
+ 
         do {
             cout << "\n> Menu Principal (Geral)" << endl << endl;
             cout << "Escolha o módulo:" << endl;

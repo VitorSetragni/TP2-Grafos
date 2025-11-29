@@ -1,6 +1,6 @@
 ###############################################
-#   Makefile automático para projetos C++      #
-#   Compila todos os .cpp em qualquer pasta    #
+#   Makefile automático para projetos C++     #
+#   Compila todos os .cpp em qualquer pasta   #
 ###############################################
 
 # Compilador
