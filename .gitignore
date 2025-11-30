@@ -91,9 +91,16 @@ dist/
 # Windows
 Thumbs.db
 Desktop.ini
+
+# Ignorar tudo dentro de assets/input e assets/output
+Codigos/assets/input/*
+Codigos/assets/output/*
+
 $RECYCLE.BIN/
 
 # macOS
 .DS_Store
 .AppleDouble
 .LSOverride
+
+
