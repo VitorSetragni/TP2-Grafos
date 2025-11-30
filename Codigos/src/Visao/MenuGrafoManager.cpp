@@ -13,9 +13,9 @@ class MenuGrafoManager {
         try {
             int opcao = 0;
 
-            cout << "---------------------------------------------" << endl;
-            cout << "--- Bem vindo ao TP1 de Teoria dos Grafos ---" << endl;
-            cout << "---------------------------------------------" << endl;
+            cout << "\n=========================================================================" << endl;
+            cout << "        BEM VINDO AO TP1 TESTE DE ALMGORITIMOS DA TEORIA DE GRAFOS        " << endl;
+            cout << "==========================================================================" << endl;
 
 
             cout << "\n> Menu " << endl << endl;

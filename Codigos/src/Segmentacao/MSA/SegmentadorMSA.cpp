@@ -13,7 +13,7 @@ const double INF = numeric_limits<double>::max();
 // Núcleo Recursivo Otimizado (Lógica Tarjan para Ciclos)
 vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, vector<ArestaEdmonds>& arestas, int nivel) {
     
-    // Log para monitorar (evita ansiedade do usuário)
+    // Log para monitorar
     if (nivel == 0 || nivel % 50 == 0) {
         cout << "[Edmonds] Nivel: " << nivel << " | Vertices: " << numVertices << " | Arestas: " << arestas.size() << endl;
     }
