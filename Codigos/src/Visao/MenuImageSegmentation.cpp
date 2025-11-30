@@ -114,6 +114,7 @@ private:
             stringstream ss;
             ss << "assets/output/" << (tipoAlgoritmo == 1 ? "MST/" : "MSA/") << nomeBase << "_" << tagAlgoritmo 
                << "_k" << (int)k 
+               << "_minSize" << minSize
                << (coresAleatorias ? "_CorAleatoria" : "_CorReal") 
                << (comBordas ? "_ApenasBordas" : "") 
                << ".ppm";
