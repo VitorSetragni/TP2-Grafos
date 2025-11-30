@@ -53,7 +53,7 @@ A estrutura foi estendida a partir do TP1 para suportar o módulo de segmentaç�
 │   ├── input/                       # Coloque suas imagens de entrada aqui
 │   └── output/                      # As imagens geradas serão salvas aqui
 ├── bin/ 
-├── libs/                            # Bibliotecas externas
+├── libs/                            # Bibliotecas externas (IO e STB)
 ├── build/                           # Objetos de compilação (.o) 
 └── src/
     ├─ Grafo/                        # Infraestrutura base de Grafos
@@ -69,8 +69,6 @@ A estrutura foi estendida a partir do TP1 para suportar o módulo de segmentaç�
     │   └─ MSA/
     │       └─ SegmentadorMSA.cpp    # Implementação de Edmonds
     │
-    ├─ libs/
-    │   └─ std/stb_image.h           # Bibliotecas para leitura de imagens RGB
     │
     ├─ Visao/
     │   ├─ MenuGrafoManager.cpp      # Interface de Operações em Grafo
@@ -152,7 +150,7 @@ Conforme os experimentos realizados no artigo:
 
 | Característica | MST (Kruskal) | MSA (Edmonds) |
 | :--- | :--- | :--- |
-| **Complexidade** | Quase linear (rápido) | Quadrática $O(nm)$ (mais lento) |
+| **Complexidade** | Quase linear (rápido) | Quadrática (mais lento) |
 | **Formato dos Segmentos** | Regiões compactas e coesas | Regiões alongadas e orientadas |
 | **Dependência de Raiz** | Não | Sim (estrutura hierárquica) |
 | **Preservação de Bordas** | Alta | Moderada |
