@@ -94,156 +94,6 @@ Pixel decodeRGBunico(double valor) {
     return p;
 }
 
-// double encodeRGBunico(Pixel p) {
-//     return p.r * 1000000 + p.b * 1000 + p.b * 1;
-// }
-
-// Pixel decodeRGBunico(double rgbUnico){
-//     int r = floor(rgbUnico / 1000000.0);
-//     int g = floor((rgbUnico - r*1000000.0) / 1000.0);
-//     int b = rgbUnico - r*1000000.0 - g*1000.0;
-
-//     return Pixel{(unsigned char)r, (unsigned char)g, (unsigned char)b};
-// }
-
-// GrafoLista* grafoFromImagem(string nomeArquivo, bool isDirecionado) {
-//     cout << "\n--- Carregando Imagem Real (Lista): " << nomeArquivo << " ---\n";
-
-//     int largura, altura, canaisOriginais;
-    
-//     // Forçamos o carregamento com 3 canais (RGB)
-//     // O último parâmetro '3' garante que teremos R, G, B
-//     unsigned char* img = stbi_load(nomeArquivo.c_str(), &largura, &altura, &canaisOriginais, 3);
-
-//     if (img == nullptr) {
-//         cout << "[ERRO] Nao foi possivel abrir a imagem.\n";
-//         return nullptr;
-//     }
-
-//     int totalVertices = largura * altura;
-
-//     // Instancia o grafo
-//     GrafoLista* novoGrafo = new GrafoLista(false, isDirecionado, true, true, false, false, 0);
-
-//     cout << "Gerando Lista com pesos RGB Euclidianos... (" << largura << "x" << altura << ")\n";
-
-//     for (int y = 0; y < altura; y++) {
-//         for (int x = 0; x < largura; x++) {
-//             // Índice do vértice atual na malha (0 a totalVertices-1)
-//             int u = y * largura + x;
-//             vector<double> rgb_u = getRBG(img,u);
-//             double unico = criarRGBunico(rgb_u);
-//             novoGrafo->adicionarVertice(Vertice(u,false,true,unico,""));
-
-//             // Vizinho da DIREITA
-//             if (x + 1 < largura) {
-//                 int v = y * largura + (x + 1);
-
-//                 vector<double> rgb_v = getRBG(img,v);                
-//                 double peso = calcularPesoEuclidiano(rgb_u,rgb_v);
-//                 novoGrafo->adicionarAresta(Vertice(u, false, true), Vertice(v, false, true), peso);
-//                 if(isDirecionado){
-//                     novoGrafo->adicionarAresta(Vertice(v, false, true), Vertice(u, false, true), peso);
-//                 }
-//             }
-
-//             // Vizinho de BAIXO
-//             if (y + 1 < altura) {
-//                 int v = (y + 1) * largura + x;
-                
-//                 vector<double> rgb_v = getRBG(img,v);
-                
-//                 double peso = calcularPesoEuclidiano(rgb_u,rgb_v);
-
-//                 novoGrafo->adicionarAresta(Vertice(u, false, true), Vertice(v, false, true), peso);
-                
-//                 if(isDirecionado){
-//                     novoGrafo->adicionarAresta(Vertice(v, false, true), Vertice(u, false, true), peso);
-//                 }
-//             }
-//         }
-//     }
-
-//     stbi_image_free(img);
-//     cout << "Grafo Lista pronto!\n";
-//     return novoGrafo;
-// }
-
-// GrafoLista* grafoFromImagem(string nomeArquivo, bool isDirecionado) {
-//     cout << "\n--- Carregando Imagem Real (Lista): " << nomeArquivo << " ---\n";
-
-//     int largura, altura, canaisOriginais;
-//     unsigned char* img = stbi_load(nomeArquivo.c_str(), &largura, &altura, &canaisOriginais, 3);
-
-//     if (img == nullptr) {
-//         cout << "[ERRO] Nao foi possivel abrir a imagem.\n";
-//         return nullptr;
-//     }
-
-//     // Inicializa grafo vazio
-//     GrafoLista* novoGrafo = new GrafoLista(
-//         false, isDirecionado, true, true, false, false, 0
-//     );
-
-//     cout << "Gerando Vertices...\n";
-
-//     // Cria apenas os vértices
-//     for (int y = 0; y < altura; y++) {
-//         for (int x = 0; x < largura; x++) {
-//             int u = y * largura + x;
-//             vector<double> rgb_u = getRBG(img, u);
-//             double unico = criarRGBunico(rgb_u);
-            
-//             // Adiciona o vértice
-//             novoGrafo->adicionarVertice(Vertice(u, false, true, unico, ""));
-//         }
-//     }
-
-//     cout << "Gerando Arestas...\n";
-
-//     // Cria arestas agora que todos os vizinhos existem
-//     for (int y = 0; y < altura; y++) {
-//         for (int x = 0; x < largura; x++) {
-//             int u = y * largura + x;
-//             vector<double> rgb_u = getRBG(img, u);
-
-//             // Vizinho da DIREITA
-//             if (x + 1 < largura) {
-//                 int v = y * largura + (x + 1);
-//                 vector<double> rgb_v = getRBG(img, v);
-//                 double peso = calcularPesoEuclidiano(rgb_u, rgb_v);
-
-//                 novoGrafo->adicionarAresta(Vertice(u, false, true), Vertice(v, false, true), peso);
-                
-//                 if (isDirecionado) {
-//                     novoGrafo->adicionarAresta(Vertice(v, false, true), Vertice(u, false, true), peso);
-//                 }
-//             }
-
-//             // Vizinho de BAIXO
-//             if (y + 1 < altura) {
-//                 int v = (y + 1) * largura + x;
-//                 vector<double> rgb_v = getRBG(img, v);
-//                 double peso = calcularPesoEuclidiano(rgb_u, rgb_v);
-
-//                 novoGrafo->adicionarAresta(Vertice(u, false, true), Vertice(v, false, true), peso);
-                
-//                 if (isDirecionado) {
-//                     novoGrafo->adicionarAresta(Vertice(v, false, true), Vertice(u, false, true), peso);
-//                 }
-//             }
-//         }
-//     }
-
-//     stbi_image_free(img);
-//     cout << "Grafo Lista pronto! Vertices: " << novoGrafo->getQuantidadeVertices() << endl;
-    
-//     // Debug essencial: Verificar se arestas foram criadas
-//     cout << "Arestas Totais: " << novoGrafo->getQuantidadeArestas() << endl;
-
-//     return novoGrafo;
-// }
-
 GrafoLista* grafoFromImagem(string nomeArquivo, bool isDirecionado) {
     cout << "\n--- Carregando Imagem Real (Lista): " << nomeArquivo << " ---\n";
 
@@ -349,7 +199,7 @@ void salvarPPM(const string& nomeArquivo, int largura, int altura, const vector<
     out.close();
 }
 
-void saveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int altura){
+void saveImageFromGrafo(const string& nomeArquivo, GrafoLista* grafo, int largura, int altura){
     if (!grafo) {
         cout << "[ERRO CRITICO] O Grafo a ser pintado é nulo!" << endl;
         return; 
@@ -358,27 +208,58 @@ void saveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int 
     salvarPPM(nomeArquivo,largura,altura,pixels);
 }
 
-// void fundirComponentes(ResultadoSegmentacao& resultado,int minSize, vector<Pixel>& paletaCores, int id, int numVertices,
-//                         vector<int>& quantidadePorComponente){
-//     // procurar componente mais similar em cor
-//     int idAlvo = 0;
-//     double biggestDist = 0;
+// Função para salvar a imagem apenas com as bordas
+void salvarImagemBordas(const string& nomeArquivo, const ResultadoSegmentacao& resultado, int largura, int altura) {
+    ofstream arquivo(nomeArquivo);
 
-//     for (int x = id; x<resultado.numComponentes; x++){
-//         double dist = calcularDistanciaEuclidiano(paletaCores[id],paletaCores[x]);
-//         if(dist >= biggestDist){
-//             biggestDist = dist;
-//             idAlvo = x;
-//         }
-//     }   
-//     for (int v = 0; v < numVertices; v++) {
-//         if (resultado.componentes[v] == id)
-//             resultado.componentes[v] = idAlvo;
-//     }
+    if (!arquivo.is_open()) {
+        cerr << "Erro ao criar o arquivo de bordas: " << nomeArquivo << endl;
+        return;
+    }
 
-//     quantidadePorComponente[id] += quantidadePorComponente[idAlvo];
-//     quantidadePorComponente.erase(quantidadePorComponente.begin() + idAlvo);
-// }
+    // Cabeçalho PPM P3
+    arquivo << "P3\n";
+    arquivo << largura << " " << altura << "\n";
+    arquivo << "255\n";
+
+    const vector<int>& comp = resultado.componentes;
+
+    for (int y = 0; y < altura; ++y) {
+        for (int x = 0; x < largura; ++x) {
+            int idxAtual = y * largura + x;
+            int idAtual = comp[idxAtual];
+            
+            bool ehBorda = false;
+
+            // Verificar vizinho da DIREITA
+            if (x + 1 < largura) {
+                int idxDireita = y * largura + (x + 1);
+                if (comp[idxDireita] != idAtual) {
+                    ehBorda = true;
+                }
+            }
+
+            // Verificar vizinho de BAIXO
+            if (!ehBorda && y + 1 < altura) {
+                int idxBaixo = (y + 1) * largura + x;
+                if (comp[idxBaixo] != idAtual) {
+                    ehBorda = true;
+                }
+            }
+
+            // Escreve o pixel no arquivo
+            if (ehBorda) {
+                arquivo << "255 255 255 "; // Borda = BRANCO
+            } else {
+                arquivo << "0 0 0 ";       // Fundo = PRETO
+            }
+        }
+        arquivo << "\n";
+    }
+
+    arquivo.close();
+    cout << "Imagem de bordas salva em: " << nomeArquivo << endl;
+}
 
 GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado, int minSize) {
     int numVertices = grafoOriginal->getQuantidadeVertices();
@@ -450,31 +331,6 @@ GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& r
     }
 
     // Criar o novo grafo (cópia estrutural, mas com pesos atualizados)
-    
-    // GrafoLista* grafoPintado = new GrafoLista(
-    //     false, // simples
-    //     false, // direcionado
-    //     true,  // verticePonderado
-    //     true,  // arestaPonderada
-    //     false, // verticeRotulado
-    //     false, // arestaRotulada
-    //     0
-    // );
-
-    // // Configura vértices com a cor média
-    // for (int i = 0; i < numVertices; i++) {
-    //     int idComponente = resultado.componentes[i];
-
-    //     if (idComponente >= 0 && idComponente < numComponentes) {
-    //         Pixel corMedia = paletaCores[idComponente];
-
-    //         double novoPesoCor = encodeRGBunico(corMedia);
-            
-    //         grafoPintado->listaPrincipal[i].vertice.setPeso(novoPesoCor);
-    //     }
-    // }
-
-    // Cria o novo grafo
     GrafoLista* grafoPintado = new GrafoLista(
         false, // simples
         false, // direcionado

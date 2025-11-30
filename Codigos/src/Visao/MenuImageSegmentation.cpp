@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <filesystem> 
+#include <chrono>
+#include <cstdint>
 
 #include "../../libs/io/MyIO.hpp" 
 
@@ -15,6 +17,8 @@
 #include "../Grafo/Lista/GrafoLista.hpp"
 
 using namespace std;
+
+using namespace std::chrono;
 
 class MenuImageSegmentation {
 
@@ -42,9 +46,23 @@ public:
     }
 
 private:
+    // Lógica
+    uint64_t timeSinceEpochMillisec() {
+        // Get the current time point from the system clock
+        // Busca o tempo atual do sistema
+        auto now = system_clock::now();
+
+        // Converte o tempo atual para o tempo desde epoch
+        auto duration = now.time_since_epoch();
+
+        // Converte a duração para milissegundos
+        uint64_t milliseconds = chrono::duration_cast<chrono::milliseconds>(duration).count();
+        
+        return milliseconds;
+    }
 
     // LOGICA DE PROCESSAMENTO
-    void processarImagem(string caminhoImagem, int tipoAlgoritmo, double k, int minSize, bool coresAleatorias) {
+    uint64_t processarImagem(string caminhoImagem, int tipoAlgoritmo, double k, int minSize, bool coresAleatorias) {
         
         cout << "\n[PROCESSANDO] Imagem: " << caminhoImagem << " | K=" << k << " | Min=" << minSize << endl;
 
@@ -70,18 +88,15 @@ private:
 
         if (!grafoInstanciado(grafo)) {
             delete segmentador;
-            return;
+            return 0;
         }
 
-        // Captura o tempo
-        // TODO: COLOQUE AQUI UM ANALISANDO DE TEMPO DE EXECUÇÃO
-        // TODO: Usar clock_gettime(CLOCK_MONOTONIC) para captura de tempo com microsegundos
+        uint64_t inicio = timeSinceEpochMillisec();
 
-        //  Executar Segmentação
+        // Executar Segmentação
         ResultadoSegmentacao resultado = segmentador->segmentar(grafo, k, minSize);
 
-
-        // TODO: COLOQUE AQUI TEMPO FINAL ANALISADO
+        uint64_t fim = timeSinceEpochMillisec();
 
         // Gerar Grafo Pintado (Visualização)
         GrafoLista* grafoPintado = nullptr;
@@ -97,7 +112,7 @@ private:
             string nomeBase = extrairNomeArquivo(caminhoImagem);
             
             stringstream ss;
-            ss << "assets/output/" << nomeBase << "_" << tagAlgoritmo 
+            ss << "assets/output/" << (tipoAlgoritmo == 1 ? "MST/" : "MSA/") << nomeBase << "_" << tagAlgoritmo 
                << "_k" << (int)k 
                << (coresAleatorias ? "_CorAleatoria" : "_CorReal") 
                << ".ppm";
@@ -109,7 +124,10 @@ private:
             unsigned char* temp = stbi_load(caminhoImagem.c_str(), &w, &h, &c, 3);
             stbi_image_free(temp);
 
-            saveImageFromGrafo(caminhoSaida, grafoPintado, w, h);
+            salvarImagemBordas(caminhoSaida, resultado, w, h);
+
+            //saveImageFromGrafo(caminhoSaida, grafoPintado, w, h);
+            
             cout << "[SUCESSO] Salvo em: " << caminhoSaida << endl;
 
             delete grafoPintado;
@@ -117,6 +135,8 @@ private:
 
         delete grafo;
         delete segmentador;
+
+        return (fim - inicio);
     }
 
     // MODOS DE OPERAÇÃO
@@ -130,7 +150,9 @@ private:
         int minSize = lerDouble("Tamanho Minimo (minSize): ");
         bool randColor = escolherCores();
 
-        processarImagem(path, alg, k, minSize, randColor);
+        uint64_t tempo = processarImagem(path, alg, k, minSize, randColor);
+
+        cout << "\n-> Tempo de execução: " << tempo << " milissegundos." << endl;
     }
 
     void executarBateriaTestes() {
@@ -148,9 +170,13 @@ private:
 
         cout << "\n--- INICIANDO BATERIA DE TESTES ---" << endl;
         
+        uint64_t tempoTotal = 0;
+
         for (double k = kIni; k <= kFim; k += kPasso) {
-            processarImagem(path, alg, k, minSize, randColor);
+            tempoTotal += processarImagem(path, alg, k, minSize, randColor);
         }
+
+        cout << "\n-> Tempo médio de execução: " << (tempoTotal / kFim) << " milissegundos." << endl;
         
         cout << "\n--- BATERIA FINALIZADA ---" << endl;
     }
