@@ -246,9 +246,13 @@ ResultadoSegmentacao SegmentadorMST::segmentar(GrafoLista* grafo, double k, int 
             bfsMarcarComponente(floresta, i, resultado.numComponentes, resultado.componentes);
             
             // Incrementa o ID para o próximo componente
-            resultado.numComponentes++;
+            resultado.numComponentes =  resultado.numComponentes + 1;
+
+            // cout << "numComponentes " << resultado.numComponentes << " | " << fundiuComponente << endl;
         }
     }
+
+
 
     // Limpar a memória
     delete floresta; 

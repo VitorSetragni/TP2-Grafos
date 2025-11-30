@@ -35,6 +35,15 @@ double calcularPesoEuclidiano(vector<double> rgb_origem, vector<double> rgb_fina
     return sqrt(r*r + g*g + b*b);
 }
 
+double calcularDistanciaEuclidiano(Pixel p_origem, Pixel p_final){
+    double r = p_origem.r - p_final.r;
+    double g = p_origem.g - p_final.g;
+    double b = p_origem.b - p_final.b;
+
+    return sqrt(r*r + g*g + b*b);
+}
+
+
 vector<double> getRBG(unsigned char* img, int idx1){
     int p1 = idx1 * 3;
 
@@ -349,12 +358,36 @@ void saveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int 
     salvarPPM(nomeArquivo,largura,altura,pixels);
 }
 
-GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado) {
+// void fundirComponentes(ResultadoSegmentacao& resultado,int minSize, vector<Pixel>& paletaCores, int id, int numVertices,
+//                         vector<int>& quantidadePorComponente){
+//     // procurar componente mais similar em cor
+//     int idAlvo = 0;
+//     double biggestDist = 0;
+
+//     for (int x = id; x<resultado.numComponentes; x++){
+//         double dist = calcularDistanciaEuclidiano(paletaCores[id],paletaCores[x]);
+//         if(dist >= biggestDist){
+//             biggestDist = dist;
+//             idAlvo = x;
+//         }
+//     }   
+//     for (int v = 0; v < numVertices; v++) {
+//         if (resultado.componentes[v] == id)
+//             resultado.componentes[v] = idAlvo;
+//     }
+
+//     quantidadePorComponente[id] += quantidadePorComponente[idAlvo];
+//     quantidadePorComponente.erase(quantidadePorComponente.begin() + idAlvo);
+// }
+
+GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado, int minSize) {
     int numVertices = grafoOriginal->getQuantidadeVertices();
     int numComponentes = resultado.numComponentes;
 
     // Acumula as cores originais por segmento
     vector<AcumuladorCor> acumuladores(numComponentes);
+
+    vector<int> quantidadePorComponente(numComponentes,0);
 
     for (int i = 0; i < numVertices; i++) {
         // Obtém a cor original do pixel i
@@ -367,12 +400,53 @@ GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& r
 
         // Acumula
         acumuladores[idComponente].adicionar(corOriginal);
+
+        quantidadePorComponente[idComponente]++;
     }
 
     // Calcula a cor média final para cada segmento
     vector<Pixel> paletaCores(numComponentes);
     for (int c = 0; c < numComponentes; c++) {
         paletaCores[c] = acumuladores[c].calcularMedia();
+    }
+
+
+    // cada posicao representa um compenente, caso ele já tenha sido alvo de uma fusão, seu valor é 1, caso contrário é 0
+    vector<int> componentesFundidos(numComponentes,0);
+    int idAlvo = 0;
+    // Fundir componentes por similaridade de cor
+    for (int i = 0; i<resultado.numComponentes; i++){
+        while (quantidadePorComponente[i] < minSize && componentesFundidos[i] == 0) { // Condição para fundir componentes
+            // cout << "Fundindo componente... ["<< i <<"] | Tamanho atual: " << quantidadePorComponente[i] << endl;
+            // procurar componente mais similar em cor
+            double smallestDist = 2147483647;
+            double dist = 2147483647;
+            for (int x = 0; x<resultado.numComponentes; x++){
+                if(x != i && componentesFundidos[x] == 0){
+                    dist = calcularDistanciaEuclidiano(paletaCores[i],paletaCores[x]);
+                    if(dist <= smallestDist){
+                        smallestDist = dist;
+                        idAlvo = x;
+                    }
+                }
+                
+            }   
+
+            for (int v = 0; v < numVertices; v++) {
+                if (resultado.componentes[v] == idAlvo)
+                    resultado.componentes[v] = i;
+            }
+
+            quantidadePorComponente[i] += quantidadePorComponente[idAlvo];
+            // cout << "Fusão completa! [com id " << idAlvo << " ]| Tamanho atual: " << quantidadePorComponente[i] << endl;
+
+            quantidadePorComponente[idAlvo] = 0;
+            paletaCores[idAlvo] = paletaCores[i];
+
+            
+            componentesFundidos[idAlvo] = 1;
+         
+        } 
     }
 
     // Criar o novo grafo (cópia estrutural, mas com pesos atualizados)

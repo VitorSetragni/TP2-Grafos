@@ -41,6 +41,8 @@ struct AcumuladorCor {
 
 double calcularPesoEuclidiano(vector<double> rgb_origem, vector<double> rgb_final);
 
+double calcularDistanciaEuclidiano(Pixel p_origem, Pixel p_final);
+
 vector<double> getRBG(unsigned char* img, int idx1);
 double criarRGBunico(vector<double> rgb);
 
@@ -54,7 +56,7 @@ void salvarPPM(const string& nomeArquivo, int largura, int altura, const vector<
 
 void saveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int altura);
 
-GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado);
+GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado, int minSize = 0);
 
 GrafoLista* gerarGrafoPintadoAleatorio(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado);
 #endif
