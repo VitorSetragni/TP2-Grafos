@@ -8,42 +8,24 @@
 #include "Segmentacao/InterfaceImagem.hpp"
 #include "Segmentacao/ISegmentador.hpp"
 #include "Segmentacao/MST/SegmentadorMST.hpp"
-#include "Segmentacao/MSA/SegmentadorMSA.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    // GrafoLista* grafoImagem = grafoFromImagem("assets/input/gato.jpg", false);
+    GrafoLista* grafoImagem = grafoFromImagem("assets/input/gato.jpg", false);
 
-    // SegmentadorMST meuSegmentador;
+    SegmentadorMST meuSegmentador;
 
-    // for (int i = 1; i <= 7; i++) {
-    //     ResultadoSegmentacao resultado = meuSegmentador.segmentar(grafoImagem, i * 100, 100);
-
-    //     GrafoLista* grafoPintado = gerarGrafoPintado(grafoImagem, resultado);
-    //     //GrafoLista* grafoPintado = gerarGrafoPintadoAleatorio(grafoImagem, resultado);
-
-    //     stringstream outputPath;
-        
-    //     outputPath << "assets/output/gato_" << (i * 100) << ".ppm";
-
-    //     saveImageFromGrafo(outputPath.str(), grafoPintado, 2560, 1463);
-    // }
-
-    GrafoLista* grafoImagem = grafoFromImagem("assets/input/club_penguin_2.png", true);
-
-    SegmentadorMSA meuSegmentador;
-
-    for (int i = 10; i <= 10; i++) {
-        ResultadoSegmentacao resultado = meuSegmentador.segmentar(grafoImagem, i * 10, 100);
+    for (int i = 1; i <= 7; i++) {
+        ResultadoSegmentacao resultado = meuSegmentador.segmentar(grafoImagem, i * 100, 100);
 
         GrafoLista* grafoPintado = gerarGrafoPintado(grafoImagem, resultado);
         //GrafoLista* grafoPintado = gerarGrafoPintadoAleatorio(grafoImagem, resultado);
 
         stringstream outputPath;
         
-        outputPath << "assets/output/club_penguin_2_k=" << (i * 10) << ".ppm";
+        outputPath << "assets/output/gato_" << (i * 100) << ".ppm";
 
-        saveImageFromGrafo(outputPath.str(), grafoPintado, 347, 347);
+        saveImageFromGrafo(outputPath.str(), grafoPintado, 2560, 1463);
     }
 
     // GrafoLista* grafoImagem = grafoFromImagem("assets/input/gatos.jpg", false);
