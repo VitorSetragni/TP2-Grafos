@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../ISegmentador.hpp"
-#include "../../utils/DSU.hpp"
 #include <vector>
 #include <algorithm>
 

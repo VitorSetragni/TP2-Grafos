@@ -133,12 +133,6 @@ vector<SegmentadorMST::ArestaSimples> SegmentadorMST::buscarListaDeArestasOrdena
     for (int u = 0; u < numVertices; u++) {
         // Acesso direto seguro (assumindo que listaPrincipal é public)
         NoVertice* noU = &(grafo->listaPrincipal[u]);
-        
-        // DEBUG: Imprimir a quantidade de arestas do primeiro vértice para teste
-        if (u == 0) {
-            int count = 0;
-            for (const auto& a : noU->getArestas()) count++;
-        }
 
         for (const auto& aresta : noU->getArestas()) {
             int v = aresta.getId();
@@ -212,9 +206,8 @@ GrafoLista* SegmentadorMST::kruskalCondicional(GrafoLista* grafoEntrada, double 
                 // Une no DSU
                 dsu.unite(raizU, raizV, w);
                 
-                // Adiciona ida e volta pois o resultado é não-direcionado
+                // Adiciona aresta no novo grafo
                 floresta->adicionarAresta(Vertice(u, false, true), Vertice(v, false, true), w);
-                floresta->adicionarAresta(Vertice(v, false, true), Vertice(u, false, true), w);
                 
                 arestasAdicionadas++;
             }
