@@ -13,6 +13,8 @@
 
 #include "../Grafo/Lista/GrafoLista.hpp"
 
+#include "ISegmentador.hpp"
+
 #include "InterfaceImagem.hpp"
 
 using namespace std;
@@ -30,7 +32,7 @@ double calcularPesoEuclidiano(vector<double> rgb_origem, vector<double> rgb_fina
     double g = rgb_origem[1] - rgb_final[0];
     double b = rgb_origem[2] - rgb_final[0];
 
-    return std::sqrt(r*r + g*g + b*b);
+    return sqrt(r*r + g*g + b*b);
 }
 
 vector<double> getRBG(unsigned char* img, int idx1){
@@ -51,16 +53,36 @@ double criarRGBunico(vector<double> rgb){
     return rgbUnico;
 }
 
-Pixel decodeRGBunico(double rgbUnico){
-    int r = floor(rgbUnico / 1000000.0);
-    int g = floor((rgbUnico - r*1000000.0) / 1000.0);
-    int b = rgbUnico - r*1000000.0 - g*1000.0;
+// double encodeRGBunico(Pixel p) {
+//     return p.r * 1000000 + p.b * 1000 + p.b * 1;
+// }
 
-    return Pixel{(unsigned char)r, (unsigned char)g, (unsigned char)b};
+// Pixel decodeRGBunico(double rgbUnico){
+//     int r = floor(rgbUnico / 1000000.0);
+//     int g = floor((rgbUnico - r*1000000.0) / 1000.0);
+//     int b = rgbUnico - r*1000000.0 - g*1000.0;
 
+//     return Pixel{(unsigned char)r, (unsigned char)g, (unsigned char)b};
+// }
+
+// Empacota (R, G, B) em um double
+double encodeRGBunico(Pixel p) {
+    // Exemplo: R * 1000000 + G * 1000 + B
+    // Usando potências de 256 para ficar exato
+    return p.r * 65536.0 + p.g * 256.0 + p.b;
 }
 
-GrafoLista* GrafoFromImagem(string nomeArquivo, bool isDirecionado) {
+// Desempacota double para (R, G, B)
+Pixel decodeRGBunico(double valor) {
+    int v = static_cast<int>(valor);
+    Pixel p;
+    p.r = (v / 65536) % 256;
+    p.g = (v / 256) % 256;
+    p.b = v % 256;
+    return p;
+}
+
+GrafoLista* grafoFromImagem(string nomeArquivo, bool isDirecionado) {
     cout << "\n--- Carregando Imagem Real (Lista): " << nomeArquivo << " ---\n";
 
     int largura, altura, canaisOriginais;
@@ -136,7 +158,6 @@ vector<Pixel> extrairPixelsDoGrafo(GrafoLista* grafo, int largura, int altura) {
     return pixels;
 }
 
-
 void salvarPPM(const string& nomeArquivo, int largura, int altura, const vector<Pixel>& pixels) {
     ofstream out(nomeArquivo, ios::binary);
     if (!out.is_open()) {
@@ -157,4 +178,96 @@ void SaveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int 
     salvarPPM(nomeArquivo,largura,altura,pixels);
 }
 
+GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado) {
+    int numVertices = grafoOriginal->getQuantidadeVertices();
+    int numComponentes = resultado.numComponentes;
 
+    // Acumula as cores originais por segmento
+    vector<AcumuladorCor> acumuladores(numComponentes);
+
+    for (int i = 0; i < numVertices; i++) {
+        // Obtém a cor original do pixel i
+        double pesoOriginal = grafoOriginal->listaPrincipal[i].vertice.getPeso();
+
+        Pixel corOriginal = decodeRGBunico(pesoOriginal);
+
+        // Descobre a qual segmento este pixel pertence
+        int idComponente = resultado.componentes[i];
+
+        // Acumula
+        acumuladores[idComponente].adicionar(corOriginal);
+    }
+
+    // Calcula a cor média final para cada segmento
+    vector<Pixel> paletaCores(numComponentes);
+    for (int c = 0; c < numComponentes; c++) {
+        paletaCores[c] = acumuladores[c].calcularMedia();
+    }
+
+    // Criar o novo grafo (cópia estrutural, mas com pesos atualizados)
+    
+    GrafoLista* grafoPintado = new GrafoLista(
+        false, // simples
+        false, // direcionado
+        true,  // verticePonderado
+        true,  // arestaPonderada
+        false, // verticeRotulado
+        false, // arestaRotulada
+        numVertices
+    );
+
+    // Configura vértices com a cor média
+    for (int i = 0; i < numVertices; i++) {
+        int idComponente = resultado.componentes[i];
+        Pixel corMedia = paletaCores[idComponente];
+        double novoPesoCor = encodeRGBunico(corMedia);
+        
+        //grafoPintado->listaPrincipal[i].vertice.setId(i);
+        grafoPintado->listaPrincipal[i].vertice.setPeso(novoPesoCor);
+    }
+
+    return grafoPintado;
+}
+
+GrafoLista* gerarGrafoPintadoAleatorio(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado) {
+    int numVertices = grafoOriginal->getQuantidadeVertices();
+    int numComponentes = resultado.numComponentes;
+
+    // Gera uma paleta de cores aleatórias para cada componente
+    vector<Pixel> paletaCores(numComponentes);
+
+    for (int c = 0; c < numComponentes; c++) {
+        // Gera R, G, B aleatórios entre 0 e 255
+        paletaCores[c] = {
+            static_cast<unsigned char>(rand() % 256),
+            static_cast<unsigned char>(rand() % 256),
+            static_cast<unsigned char>(rand() % 256)
+        };
+    }
+
+    // Cria o novo grafo
+    GrafoLista* grafoPintado = new GrafoLista(
+        false, // simples
+        false, // direcionado
+        true,  // verticePonderado
+        true,  // arestaPonderada
+        false, // verticeRotulado
+        false, // arestaRotulada
+        numVertices
+    );
+
+    // Configura vértices com a cor correspondente da paleta aleatória
+    for (int i = 0; i < numVertices; i++) {
+        int idComponente = resultado.componentes[i];
+        
+        // Proteção básica: garante que o ID está dentro do alcance da paleta gerada
+        if (idComponente >= 0 && idComponente < numComponentes) {
+            Pixel corAleatoria = paletaCores[idComponente];
+            double novoPesoCor = encodeRGBunico(corAleatoria);
+            
+            grafoPintado->listaPrincipal[i].vertice.setPeso(novoPesoCor);
+        }
+    }
+
+    return grafoPintado;
+}

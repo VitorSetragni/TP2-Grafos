@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GRAFOLISTA_HPP
 #define GRAFOLISTA_HPP
 

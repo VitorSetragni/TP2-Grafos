@@ -1,114 +1,143 @@
-#include "MenuLista.hpp"
-
 #include <iostream>
 #include <string>
 
-#include "../Grafo/Lista/GrafoLista.hpp"
+#include "MenuLista.hpp"
+
 #include "../../libs/io/io.hpp"
 #include "../../libs/io/MyIO.hpp"
 
-
+#include "../Segmentacao/InterfaceImagem.hpp"
+#include "../Segmentacao/MST/SegmentadorMST.hpp"
 
 using namespace std;
+
 #define maxVertice 2147483647
 
 /**
- * Menu de operações para manipular o grafo.
+ * Menu de op es para manipular o grafo.
  *
  * Pergunta ao usuario qual opção ele deseja fazer, dependendo da escolha,
  * chama a respectiva função para realizar a operação que desejada.
  *
  * @see intanciaGrafo()
+ * @see criaGrafoTeste()
  * @see adicionaVertice()
  * @see adicionaAresta()
  * @see removeVertice()
  * @see removeAresta()
  * @see consultaVizinhosVertice()
- * @see consultarSucessoresVertice()
- * @see consultarPredecessoresVertice()
+ * @see consultarFechoTransitivoDireto()
+ * @see consultarFechoTransitivoInverso()
+ * @see buscaProfundidade()
+ * @see buscaLargura()
  * @see removeGrafo()
  * @see imprimeGrafo()
  */
-
 void MenuLista::menu() {
-    int opcao = -1;
-    while (opcao != 0) {
-        cout << "\n> Menu > Lista" << endl << endl;
-        cout << "1) Instanciar Grafo" << endl;
-        cout << "2) Adicionar Vértice" << endl;
-        cout << "3) Adicionar Aresta" << endl;
-        cout << "4) Remover Vértice" << endl;
-        cout << "5) Remover Aresta" << endl;
-        cout << "6) Consultar Vizinhos de um Vértice" << endl;
-        cout << "7) Consultar Fecho Transitivo Direto de um Vértice" << endl;
-        cout << "8) Consultar Fecho Transitivo Inverso de um Vértice" << endl;
-        cout << "9) Busca em Profundidade - DFS" << endl;
-        cout << "10) Busca em Largura - BFS" << endl;
-        cout << "11) Imprimir Grafo" << endl;
-        cout << "12) Remover Grafo" << endl;
-        cout << "0) Sair" << endl << endl;
+        int opcao = -1;
+        while (opcao != 0) {
+            cout << "\n> Menu > Lista" << endl << endl;
+            cout << "1) Instanciar Grafo" << endl;
+            cout << "2) Adicionar Vértice" << endl;
+            cout << "3) Adicionar Aresta" << endl;
+            cout << "4) Remover Vértice" << endl;
+            cout << "5) Remover Aresta" << endl;
+            cout << "6) Consultar Vizinhos de um Vértice" << endl;
+            cout << "7) Consultar Fecho Transitivo Direto de um Vértice" << endl;
+            cout << "8) Consultar Fecho Transitivo Inverso de um Vértice" << endl;
+            cout << "9) Busca em Profundidade - DFS" << endl;
+            cout << "10) Busca em Largura - BFS" << endl;
+            cout << "11) Imprimir Grafo" << endl;
+            cout << "12) Remover Grafo" << endl;
+            cout << "13) Segmentação com MST" << endl;
+            cout << "14) Segmentação com MSA" << endl;
+            cout << "15) Teste com Imagem" << endl;
+            cout << "0) Sair" << endl << endl;
 
-        cout << "Opção: ";
-        cin >> opcao;
+            cout << "Opção: ";
+            cin >> opcao;
 
-        switch (opcao) {
-            case 1:
-                intanciaGrafo();
-                break;
+            switch (opcao) {
+                case 1:
+                    intanciaGrafo();
+                    break;
 
-            case 2:
-                if (grafoInstanciado()) adicionaVertice();
-                break;
+                case 2:
+                    if(grafoInstanciado()) adicionaVertice();
+                    break;
 
-            case 3:
-                if (grafoInstanciado()) adicionaAresta();
-                break;
+                case 3:
+                    if(grafoInstanciado()) adicionaAresta();
+                    break;
 
-            case 4:
-                if (grafoInstanciado()) removeVertice();
-                break;
+                case 4:
+                    if(grafoInstanciado()) removeVertice();
+                    break;
 
-            case 5:
-                if (grafoInstanciado()) removeAresta();
-                break;
+                case 5:
+                    if(grafoInstanciado()) removeAresta();
+                    break;
 
-            case 6:
-                if (grafoInstanciado()) consultaVizinhosVertice();
-                break;
+                case 6:
+                    if(grafoInstanciado()) consultaVizinhosVertice();
+                    break;
 
-            case 7:
-                if (grafoInstanciado()) consultarSucessoresVertice();
-                break;
+                case 7:
+                    if(grafoInstanciado()) consultarSucessoresVertice();
+                    break;
 
-            case 8:
-                if (grafoInstanciado()) consultarPredecessoresVertice();
-                break;
+                case 8:
+                    if(grafoInstanciado()) consultarPredecessoresVertice();
+                    break;
 
-            case 9:
-                if (grafoInstanciado()) buscaEmProfundidade();
-                break;
+                case 9:
+                    if(grafoInstanciado()) buscaEmProfundidade();
+                    break;
 
-            case 10:
-                if (grafoInstanciado()) buscaEmLargura();
-                break;
+                case 10:
+                    if(grafoInstanciado()) buscaEmLargura();
+                    break;
 
-            case 11:
-                if (grafoInstanciado()) imprimeGrafo();
-                break;
+                case 11:
+                    if(grafoInstanciado()) imprimeGrafo();
+                    break;
 
-            case 12:
-                if (grafoInstanciado()) removeGrafo();
-                break;
+                case 12:
+                    if(grafoInstanciado()) removeGrafo();
+                    break;
 
-            case 0:
-                cout << "\nSaindo..." << endl;
-                break;
-            default:
-                cout << "\nOpção inválida!" << endl;
-                break;
+                case 13:
+                    if (grafoInstanciado()) {
+
+                    }
+                    break;
+
+                case 14:
+                    if (grafoInstanciado()) {
+                        //resolverEdmondsNoSeuGrafo(*grafo, 0);
+                    }
+                    break;
+
+                case 15:
+                    if (this->grafo != nullptr) delete this->grafo;
+
+                    this->grafo = grafoFromImagem("ImgGrafo.png", false);
+
+                    if (this->grafo != nullptr) {
+                        cout << "Grafo carregado na Lista! Escolha a opcao 14 para rodar o Edmonds.\n";
+                    }
+                    break;
+
+                case 0:
+                    cout << "\nSaindo..." << endl;
+                    break;
+
+                default:
+                    cout << "\nOpção inválida!" << endl;
+                    break;
+            }
         }
     }
-}
 
 /**
  * Verifica se o grafo está instanciado.
@@ -144,15 +173,14 @@ void MenuLista::intanciaGrafo() {
     // Ler as informações do usuário
     numVertices = lerInteiro("Número de vértices: ", 1, maxVertice);
 
-    simples = lerBoolean("O grafo é simples?          (S/N): ");
-    direcionado = lerBoolean("O grafo é direcionado?      (S/N): ");
+    simples          = lerBoolean("O grafo é simples?          (S/N): ");
+    direcionado      = lerBoolean("O grafo é direcionado?      (S/N): ");
     verticePonderado = lerBoolean("Os vértices são ponderados? (S/N): ");
-    arestaPonderada = lerBoolean("As arestas são ponderadas?  (S/N): ");
-    verticeRotulado = lerBoolean("Os vértices são rotulados?  (S/N): ");
-    arestaRotulada = lerBoolean("As arestas são rotuladas?   (S/N): ");
+    arestaPonderada  = lerBoolean("As arestas são ponderadas?  (S/N): ");
+    verticeRotulado  = lerBoolean("Os vértices são rotulados?  (S/N): ");
+    arestaRotulada   = lerBoolean("As arestas são rotuladas?   (S/N): ");
 
-    this->grafo = new GrafoLista(simples, direcionado, verticePonderado, arestaPonderada,
-                                 verticeRotulado, arestaRotulada, numVertices);
+    this->grafo = new GrafoLista(simples, direcionado, verticePonderado, arestaPonderada,                          verticeRotulado, arestaRotulada, numVertices);
 }
 
 void MenuLista::adicionaVertice() {
@@ -189,8 +217,10 @@ void MenuLista::adicionaAresta() {
     int fim;
     grafo->imprimir();
     // pegando a posição dos vertices na Lista
-    inicio = lerInteiro("Digite o número do vértice de saida: ", 0, grafo->getQuantidadeVertices());
-    fim = lerInteiro("Digite o número do vértice de chegada: ", 0, grafo->getQuantidadeVertices());
+    inicio = lerInteiro("Digite o número do vértice de saida: ", 0,
+            grafo->getQuantidadeVertices());
+    fim = lerInteiro("Digite o número do vértice de chegada: ", 0,
+                        grafo->getQuantidadeVertices());
 
     // teste de ponderado e de rotulo
     if (grafo->arestaRotulada == 1) {
@@ -205,18 +235,19 @@ void MenuLista::adicionaAresta() {
     Vertice inicioV = grafo->listaPrincipal[inicio].vertice;
     Vertice fimV = grafo->listaPrincipal[fim].vertice;
     // if (grafo->adicionarAresta(inicioV, fimV, peso, rotulo)) {
-    if (grafo->arestaPonderada || grafo->arestaRotulada) {
-        if (grafo->adicionarAresta(inicioV, fimV, peso, rotulo)) {
+    if(grafo->arestaPonderada || grafo->arestaRotulada){
+        if(grafo->adicionarAresta(inicioV,fimV,peso,rotulo)) {
             cout << "Aresta adicionada com sucesso!" << endl << endl;
         } else
             cout << "Houve um erro." << endl;
     } else {
-        if (grafo->adicionarAresta(inicioV, fimV)) {
+        if(grafo->adicionarAresta(inicioV,fimV)){
             cout << "Aresta adicionada com sucesso!" << endl << endl;
         } else {
             cout << "Houve um erro" << endl;
         }
     }
+
 }
 
 void MenuLista::removeVertice() {
@@ -227,7 +258,7 @@ void MenuLista::removeVertice() {
     grafo->imprimir();
     // pegando a posição dos vertices na Lista
     vertice = lerInteiro("Digite o número do vértice que deseja remover: ", 0,
-                         grafo->getQuantidadeVertices());
+                            grafo->getQuantidadeVertices());
     // O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice
     // que esta o vertice
     Vertice inicioV = grafo->listaPrincipal[vertice].vertice;
@@ -244,8 +275,10 @@ void MenuLista::removeAresta() {
     int fim;
     grafo->imprimir();
     // pegando a posição dos vertices na Lista
-    inicio = lerInteiro("Digite o número do vértice de saida: ", 0, grafo->getQuantidadeVertices());
-    fim = lerInteiro("Digite o número do vértice de chegada: ", 0, grafo->getQuantidadeVertices());
+    inicio =
+        lerInteiro("Digite o número do vértice de saida: ", 0, grafo->getQuantidadeVertices());
+    fim = lerInteiro("Digite o número do vértice de chegada: ", 0,
+                        grafo->getQuantidadeVertices());
 
     // O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice
     // que esta o vertice
@@ -267,7 +300,7 @@ void MenuLista::consultaVizinhosVertice() {
 
     // pegando a posição dos vertices na Lista
     verticei = lerInteiro("Digite o número do vértice que deseja consultar os vizinhos: ", 0,
-                          grafo->getQuantidadeVertices());
+                            grafo->getQuantidadeVertices());
 
     // O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice
     // que esta o vertice
@@ -277,7 +310,7 @@ void MenuLista::consultaVizinhosVertice() {
     if (vizinho.empty()) {
         cout << "Sem vizinhos\n";
     } else {
-        cout << endl << "Vizinhos de " << inicioV.toString() << ": ";
+        cout << endl << "Vizinhos de " << inicioV.toString() <<": ";
         for (const Vertice& v : vizinho) {
             cout << v.toString() << " ";
         }
@@ -287,24 +320,22 @@ void MenuLista::consultaVizinhosVertice() {
 
 void MenuLista::consultarSucessoresVertice() {
     cout << "\n> Menu > Lista > Consultar Fecho Transitivo Direto de Vértice" << endl << endl;
-    // Variavel para indicar a posição do vertice no array
+        // Variavel para indicar a posição do vertice no array
     int verticei;
 
     grafo->imprimir();
 
-    // pegando a posição dos vertices na Lista
-    verticei = lerInteiro("Digite o número do vértice que deseja consultar: ", 0,
-                          grafo->getQuantidadeVertices());
+    //pegando a posição dos vertices na Lista
+    verticei = lerInteiro("Digite o número do vértice que deseja consultar: ", 0,grafo->getQuantidadeVertices());
 
-    // O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice que
-    // esta o vertice
+    //O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice que esta o vertice
     Vertice inicioV = grafo->listaPrincipal[verticei].vertice;
 
     vector<Vertice> vizinho = grafo->fechoTransitivoDireto(inicioV);
     if (vizinho.empty()) {
         cout << "Vazio\n";
     } else {
-        cout << endl << "Fecho Transito Direto de " << inicioV.toString() << ": ";
+        cout << endl << "Fecho Transito Direto de " << inicioV.toString() <<": ";
         for (const Vertice& v : vizinho) {
             cout << v.toString() << " ";
         }
@@ -314,24 +345,22 @@ void MenuLista::consultarSucessoresVertice() {
 
 void MenuLista::consultarPredecessoresVertice() {
     cout << "\n> Menu > Lista > Consultar Fecho Transitivo Inverso de Vértice" << endl << endl;
-    // Variavel para indicar a posição do vertice no array
+        // Variavel para indicar a posição do vertice no array
     int verticei;
 
     grafo->imprimir();
 
-    // pegando a posição dos vertices na Lista
-    verticei = lerInteiro("Digite o número do vértice que deseja consultar: ", 0,
-                          grafo->getQuantidadeVertices());
+    //pegando a posição dos vertices na Lista
+    verticei = lerInteiro("Digite o número do vértice que deseja consultar: ", 0,grafo->getQuantidadeVertices());
 
-    // O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice que
-    // esta o vertice
+    //O vertice esta dentro da listaPrincipal que é feita de NoVertice e dentro do Novertice que esta o vertice
     Vertice inicioV = grafo->listaPrincipal[verticei].vertice;
 
     vector<Vertice> vizinho = grafo->fechoTransitivoInverso(inicioV);
     if (vizinho.empty()) {
         cout << "Vazio\n";
     } else {
-        cout << endl << "Fecho Transito Inverso de " << inicioV.toString() << ": ";
+        cout << endl << "Fecho Transito Inverso de " << inicioV.toString() <<": ";
         for (const Vertice& v : vizinho) {
             cout << v.toString() << " ";
         }
@@ -351,19 +380,18 @@ void MenuLista::removeGrafo() {
     }
 }
 
-void MenuLista::buscaEmLargura() {
+void MenuLista::buscaEmLargura(){
     cout << "\n> Menu > Lista > Busca em Largura - BFS" << endl << endl;
     imprimeGrafo();
-    int verticei = lerInteiro("Digite o número do vértice para começar o caminho: ", 0,
-                              grafo->getQuantidadeVertices());
+    int verticei = lerInteiro("Digite o número do vértice para começar o caminho: ", 0,grafo->getQuantidadeVertices());
     Vertice inicioV = grafo->listaPrincipal[verticei].vertice;
 
     vector<Vertice> resposta = grafo->buscaEmLargura(inicioV);
 
-    if (resposta.empty()) {
+    if(resposta.empty()){
         cout << "Caminho vazio" << endl << endl;
     } else {
-        cout << endl << "BFS a partir de " << inicioV.toString() << ": ";
+        cout << endl << "BFS a partir de " << inicioV.toString() <<": ";
         for (const Vertice& v : resposta) {
             cout << v.toString() << " ";
         }
@@ -371,20 +399,19 @@ void MenuLista::buscaEmLargura() {
     }
 }
 
-void MenuLista::buscaEmProfundidade() {
+void MenuLista::buscaEmProfundidade(){
     cout << "\n> Menu > Lista > Busca em profundidade - DFS" << endl << endl;
     imprimeGrafo();
 
-    int verticei = lerInteiro("Digite o número do vértice para começar o caminho: ", 0,
-                              grafo->getQuantidadeVertices());
+    int verticei = lerInteiro("Digite o número do vértice para começar o caminho: ", 0,grafo->getQuantidadeVertices());
     Vertice inicioV = grafo->listaPrincipal[verticei].vertice;
 
     vector<Vertice> resposta = grafo->buscaEmProfundidade(inicioV);
 
-    if (resposta.empty()) {
+    if(resposta.empty()){
         cout << "Caminho vazio" << endl << endl;
     } else {
-        cout << endl << "DFS a partir de " << inicioV.toString() << ": ";
+        cout << endl << "DFS a partir de " << inicioV.toString() <<": ";
         for (const Vertice& v : resposta) {
             cout << v.toString() << " ";
         }

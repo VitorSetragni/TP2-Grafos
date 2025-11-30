@@ -48,7 +48,14 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "cinttypes": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "codecvt": "cpp",
+    "ctime": "cpp",
+    "forward_list": "cpp",
+    "map": "cpp",
+    "optional": "cpp",
+    "ratio": "cpp",
+    "iomanip": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

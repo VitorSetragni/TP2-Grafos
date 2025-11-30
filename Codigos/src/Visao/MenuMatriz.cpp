@@ -112,8 +112,8 @@ void MenuMatriz::menu() {
  * @return true se o grafo estiver instanciado, false caso contrário.
  */
 bool MenuMatriz::grafoInstanciado() {
-    if (grafo == null) cout << "\n[ERRO]: O grafo não está instanciado." << endl;
-    return grafo != null;
+    if (grafo == NULL) cout << "\n[ERRO]: O grafo não está instanciado." << endl;
+    return grafo != NULL;
 }
 
 /**
@@ -422,7 +422,7 @@ void MenuMatriz::buscaLargura() {
 void MenuMatriz::imprimeGrafo() {
     cout << "\n> Menu > Matriz > Imprimir Grafo" << endl << endl;
 
-    if (grafo != null) grafo->imprimir();
+    if (grafo != NULL) grafo->imprimir();
 }
 
 /**
@@ -439,7 +439,7 @@ void MenuMatriz::removeGrafo() {
 
     if (controle) {
         delete grafo;
-        grafo = null;
+        grafo = NULL;
         cout << "\nGrafo removido com sucesso." << endl;
     }
 }
@@ -451,7 +451,7 @@ void MenuMatriz::removeGrafo() {
  */
 void MenuMatriz::criarGrafoPadrao() {
     // Testar se já existe um grafo instanciado
-    if (this->grafo != null) {
+    if (this->grafo != NULL) {
         cout << "\n Já existe um grafo instanciado!" << endl;
         return;
     }

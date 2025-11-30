@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MENULISTA_HPP
 #define MENULISTA_HPP
 

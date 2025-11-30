@@ -6,12 +6,23 @@
 
 #include "../libs/io/io.hpp"
 #include "Segmentacao/InterfaceImagem.hpp"
+#include "Segmentacao/ISegmentador.hpp"
+#include "Segmentacao/MST/SegmentadorMST.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    GrafoLista* g = GrafoFromImagem("teste.png",false);
+    GrafoLista* grafoImagem = grafoFromImagem("assets/input/club_penguin_1.png", false);
 
-    SaveImageFromGrafo("teste_refeita.ppm",g,512,512);
+    SegmentadorMST meuSegmentador;
+
+    cout << "Numero de vertices: " << grafoImagem->getQuantidadeVertices() << endl;
+    ResultadoSegmentacao resultado = meuSegmentador.segmentar(grafoImagem, 3000, 0);
+
+    //GrafoLista* grafoPintado = gerarGrafoPintado(grafoImagem, resultado);
+    GrafoLista* grafoPintado = gerarGrafoPintadoAleatorio(grafoImagem, resultado);
+
+    SaveImageFromGrafo("assets/output/club_penguin_1.ppm", grafoPintado, 640, 640);
+
     try {
         int opcaoPrincipal = 0;
 

@@ -25,22 +25,22 @@ public:
             cout << "--- TP2: Segmentação de Imagens via MST (Felzenszwalb) ---" << endl;
             cout << "--------------------------------------------------------" << endl;
 
-            // 1. Entrada de Dados da Imagem
-            cout << "\n> Configuração Inicial da Imagem" << endl;
-            string nomeImagem = lerString("Digite o caminho/nome da imagem (ex: image.ppm): ");
+            // // 1. Entrada de Dados da Imagem
+            // cout << "\n> Configuração Inicial da Imagem" << endl;
+            // string nomeImagem = lerString("Digite o caminho/nome da imagem (ex: image.ppm): ");
 
-            // 2. Coleta de Parâmetros do Algoritmo
-            cout << "\n> Parâmetros do Algoritmo de Felzenszwalb & Huttenlocher" << endl;
+            // // 2. Coleta de Parâmetros do Algoritmo
+            // cout << "\n> Parâmetros do Algoritmo de Felzenszwalb & Huttenlocher" << endl;
             
             // parâmetro 'k' -> controla o grau de granularidade 
             // Valores baixos = muitos segmentos; Valores altos = segmentos maiores
             int k = lerInteiro("Informe o valor de 'k' (Limiar de corte, ex: 300): ", 0, 1000);
 
-            // pós-processamento para remover componentes menores que 'min_size' 
-            int minSize = lerInteiro("Informe o 'min_size' (Tamanho mínimo do componente, ex: 50): ", 0, 1000);
+            // // pós-processamento para remover componentes menores que 'min_size' 
+            // int minSize = lerInteiro("Informe o 'min_size' (Tamanho mínimo do componente, ex: 50): ", 0, 1000);
             
-            // uso de Gaussian Blur no pré-processamento
-            double sigma = lerDouble("Informe o sigma do Gaussian Blur (ex: 0.8): ");
+            // // uso de Gaussian Blur no pré-processamento
+            // double sigma = lerDouble("Informe o sigma do Gaussian Blur (ex: 0.8): ");
 
             do {
                 // ! DECIDIR SE REALMENTE TEREMOS MAIS DE UMA OPÇÃO DE MODELAGEM
@@ -68,12 +68,12 @@ public:
                 // Lógica de despacho para a implementação correta
                 switch (opcao) {
                     case 1:
-                        cout << "3. Executando Segmentação (MST) usando [Matriz de Adjacências]..." << endl;
+                        cout << "1. Executando Segmentação (MST) usando [Matriz de Adjacências]..." << endl;
                         // TODO: Chamar o controlador de segmentação passando a MATRIZ
                         // Exemplo: processador.executarComMatriz(nomeImagem, k, minSize, sigma);
                         break;
                     case 2:
-                        cout << "3. Executando Segmentação (MST) usando [Lista de Adjacências]..." << endl;
+                        cout << "2. Executando Segmentação (MST) usando [Lista de Adjacências]..." << endl;
                         // TODO: Chamar o controlador de segmentação passando a LISTA
                         // Exemplo: processador.executarComLista(nomeImagem, k, minSize, sigma);
                         break;

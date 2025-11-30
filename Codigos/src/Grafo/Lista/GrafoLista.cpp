@@ -745,133 +745,133 @@ int GrafoLista::getUltimoId() const {
     return ultimoId;
 }
 
-void TesteNaoDirecionado() {
-    cout << endl << ">>>> Grafo Não direcionado" << endl << endl;
+// void TesteNaoDirecionado() {
+//     cout << endl << ">>>> Grafo Não direcionado" << endl << endl;
 
-    GrafoLista g = GrafoLista(false, false, false, false, false, false);
-    Vertice v1 = Vertice(1, false, false);
-    Vertice v2 = Vertice(2, false, false);
-    Vertice v3 = Vertice(3, false, false);
-    Vertice v4 = Vertice(4, false, false);
+//     GrafoLista g = GrafoLista(false, false, false, false, false, false);
+//     Vertice v1 = Vertice(1, false, false);
+//     Vertice v2 = Vertice(2, false, false);
+//     Vertice v3 = Vertice(3, false, false);
+//     Vertice v4 = Vertice(4, false, false);
 
-    g.adicionarVertice(v1);
-    g.adicionarVertice(v2);
-    g.adicionarVertice(v3);
-    g.adicionarVertice(v4);
+//     g.adicionarVertice(v1);
+//     g.adicionarVertice(v2);
+//     g.adicionarVertice(v3);
+//     g.adicionarVertice(v4);
 
-    g.adicionarAresta(v1, v2);
-    g.adicionarAresta(v3, v4);
-    g.imprimir();
+//     g.adicionarAresta(v1, v2);
+//     g.adicionarAresta(v3, v4);
+//     g.imprimir();
 
-    cout << "Removendo aresta" << v1.toString() << " :" << v2.toString() << endl;
-    g.removerAresta(v1, v2);
-    g.imprimir();
+//     cout << "Removendo aresta" << v1.toString() << " :" << v2.toString() << endl;
+//     g.removerAresta(v1, v2);
+//     g.imprimir();
 
-    cout << "Removendo vértice" << v4.toString() << endl;
-    g.removerVertice(v4);
-    g.imprimir();
-}
-void TesteDirecionado() {
-    cout << endl << "Grafo Direcionado" << endl << endl;
-    GrafoLista g = GrafoLista(false, true, false, false, false, false);
-    g.imprimir();
-    Vertice v = Vertice(1, false, false);
-    for (int i = 0; i < 11; i++) {
-        v.setId(i + 1);
-        g.adicionarVertice(v);
-    }
+//     cout << "Removendo vértice" << v4.toString() << endl;
+//     g.removerVertice(v4);
+//     g.imprimir();
+// }
+// void TesteDirecionado() {
+//     cout << endl << "Grafo Direcionado" << endl << endl;
+//     GrafoLista g = GrafoLista(false, true, false, false, false, false);
+//     g.imprimir();
+//     Vertice v = Vertice(1, false, false);
+//     for (int i = 0; i < 11; i++) {
+//         v.setId(i + 1);
+//         g.adicionarVertice(v);
+//     }
 
-    for (int i = 0; i < g.numVertices; i++) {
-        v.setId(i);
-        for (int x = 0; x < g.numVertices; x++) {
-            Vertice a = Vertice(v);
-            a.setId(x);
-            g.adicionarAresta(v, a);
-        }
-    }
-    g.imprimir();
-}
-void TestePonderado() {
-    cout << endl << "Grafo Ponderado" << endl << endl;
-    GrafoLista g1 = GrafoLista(false, true, true, true, false, false);
-    g1.imprimir();
+//     for (int i = 0; i < g.numVertices; i++) {
+//         v.setId(i);
+//         for (int x = 0; x < g.numVertices; x++) {
+//             Vertice a = Vertice(v);
+//             a.setId(x);
+//             g.adicionarAresta(v, a);
+//         }
+//     }
+//     g.imprimir();
+// }
+// void TestePonderado() {
+//     cout << endl << "Grafo Ponderado" << endl << endl;
+//     GrafoLista g1 = GrafoLista(false, true, true, true, false, false);
+//     g1.imprimir();
 
-    Vertice v1 = Vertice(1, false, true);
-    for (int i = 0; i < 11; i++) {
-        v1.setId(i + 1);
-        v1.setPeso(i * v1.getId());
-        g1.adicionarVertice(v1);
-    }
-    g1.imprimir();
+//     Vertice v1 = Vertice(1, false, true);
+//     for (int i = 0; i < 11; i++) {
+//         v1.setId(i + 1);
+//         v1.setPeso(i * v1.getId());
+//         g1.adicionarVertice(v1);
+//     }
+//     g1.imprimir();
 
-    Vertice origem = g1.getlistaPrincipal().at(0).vertice;
-    Vertice destino = g1.getlistaPrincipal().at(5).vertice;
+//     Vertice origem = g1.getlistaPrincipal().at(0).vertice;
+//     Vertice destino = g1.getlistaPrincipal().at(5).vertice;
 
-    g1.adicionarAresta(origem, destino, 10);
+//     g1.adicionarAresta(origem, destino, 10);
 
-    for (const auto& origem : g1.getlistaPrincipal()) {
-        for (int x = 5; x < g1.numVertices; x++) {
-            Vertice a = Vertice(origem.vertice);
-            a.setId(x);
-            g1.adicionarAresta(origem.vertice, a, rand() % 1000);
-        }
-    }
+//     for (const auto& origem : g1.getlistaPrincipal()) {
+//         for (int x = 5; x < g1.numVertices; x++) {
+//             Vertice a = Vertice(origem.vertice);
+//             a.setId(x);
+//             g1.adicionarAresta(origem.vertice, a, rand() % 1000);
+//         }
+//     }
 
-    g1.imprimir();
+//     g1.imprimir();
 
-    g1.removerAresta(origem, destino);
-    g1.imprimir();
-}
-void TesteRotulado() {
-    cout << endl << "Grafo Rotulado" << endl << endl;
+//     g1.removerAresta(origem, destino);
+//     g1.imprimir();
+// }
+// void TesteRotulado() {
+//     cout << endl << "Grafo Rotulado" << endl << endl;
 
-    GrafoLista gr = GrafoLista(true, true, false, false, true, true);
-    Vertice vr1 = Vertice(1, true, false);
-    Vertice vr2 = Vertice(2, true, false);
-    Vertice vr3 = Vertice(3, true, false);
-    Vertice vr4 = Vertice(4, true, false);
+//     GrafoLista gr = GrafoLista(true, true, false, false, true, true);
+//     Vertice vr1 = Vertice(1, true, false);
+//     Vertice vr2 = Vertice(2, true, false);
+//     Vertice vr3 = Vertice(3, true, false);
+//     Vertice vr4 = Vertice(4, true, false);
 
-    vr1.setRotulo("Cor");
-    vr2.setRotulo("Fruta");
-    vr3.setRotulo("?");
-    vr4.setRotulo("Sei la mano");
+//     vr1.setRotulo("Cor");
+//     vr2.setRotulo("Fruta");
+//     vr3.setRotulo("?");
+//     vr4.setRotulo("Sei la mano");
 
-    gr.adicionarVertice(vr1);
-    gr.adicionarVertice(vr2);
-    gr.adicionarVertice(vr3);
+//     gr.adicionarVertice(vr1);
+//     gr.adicionarVertice(vr2);
+//     gr.adicionarVertice(vr3);
 
-    for (const auto& origem : gr.getlistaPrincipal()) {
-        for (int x = 0; x < gr.numVertices; x++) {
-            Vertice a = Vertice(origem.vertice);
-            a.setId(x);
-            gr.adicionarAresta(origem.vertice, a, "Abacate");
-        }
-        cout << endl;
-    }
+//     for (const auto& origem : gr.getlistaPrincipal()) {
+//         for (int x = 0; x < gr.numVertices; x++) {
+//             Vertice a = Vertice(origem.vertice);
+//             a.setId(x);
+//             gr.adicionarAresta(origem.vertice, a, "Abacate");
+//         }
+//         cout << endl;
+//     }
 
-    gr.imprimir();
+//     gr.imprimir();
 
-    cout << "Remover o aresta " << vr1.toString() << " : " << vr3.toString() << endl;
-    gr.removerAresta(vr1, vr3);
-    gr.imprimir();
+//     cout << "Remover o aresta " << vr1.toString() << " : " << vr3.toString() << endl;
+//     gr.removerAresta(vr1, vr3);
+//     gr.imprimir();
 
-    gr.removerAresta(vr1, vr1);
-    gr.removerAresta(vr3, vr3);
+//     gr.removerAresta(vr1, vr1);
+//     gr.removerAresta(vr3, vr3);
 
-    vector<Vertice> fti = gr.fechoTransitivoInverso(vr1);
-    cout << "Fecho Transitivo Inverso do " << vr1.toString() << endl;
-    gr.imprimir(fti);
+//     vector<Vertice> fti = gr.fechoTransitivoInverso(vr1);
+//     cout << "Fecho Transitivo Inverso do " << vr1.toString() << endl;
+//     gr.imprimir(fti);
 
-    vector<Vertice> ftd = gr.fechoTransitivoDireto(vr1);
-    cout << "Fecho Transitivo Direto do " << vr1.toString() << endl;
-    gr.imprimir(ftd);
+//     vector<Vertice> ftd = gr.fechoTransitivoDireto(vr1);
+//     cout << "Fecho Transitivo Direto do " << vr1.toString() << endl;
+//     gr.imprimir(ftd);
 
-    gr.adicionarVertice(vr4);
-    gr.imprimir();
-    vector<Vertice> vizinhos = gr.getVizinhos(vr1);
-    cout << "Vizinhos de" << vr1.toString() << endl;
-    gr.imprimir(vizinhos);
-}
+//     gr.adicionarVertice(vr4);
+//     gr.imprimir();
+//     vector<Vertice> vizinhos = gr.getVizinhos(vr1);
+//     cout << "Vizinhos de" << vr1.toString() << endl;
+//     gr.imprimir(vizinhos);
+// }
 
 // Extrai IDs de um vetor de Vertice
 static vector<int> idsOf(const vector<Vertice>& vs) {
@@ -915,110 +915,110 @@ static vector<Vertice> criarVertices(GrafoLista& g, int n) {
     return res;
 }
 
-void testeBfsOrdemCaminho() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 4);  // cria 4 vértices, ids reais consecutivos
+// void testeBfsOrdemCaminho() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 4);  // cria 4 vértices, ids reais consecutivos
 
-    g.adicionarAresta(vs[0], vs[1]);
-    g.adicionarAresta(vs[1], vs[2]);
-    g.adicionarAresta(vs[2], vs[3]);
+//     g.adicionarAresta(vs[0], vs[1]);
+//     g.adicionarAresta(vs[1], vs[2]);
+//     g.adicionarAresta(vs[2], vs[3]);
 
-    auto ordemBFS = g.buscaEmLargura(vs[0]);
-    check("BFS - ordem linear", idsOf(ordemBFS),
-          {vs[0].getId(), vs[1].getId(), vs[2].getId(), vs[3].getId()});
+//     auto ordemBFS = g.buscaEmLargura(vs[0]);
+//     check("BFS - ordem linear", idsOf(ordemBFS),
+//           {vs[0].getId(), vs[1].getId(), vs[2].getId(), vs[3].getId()});
 
-    auto caminho = g.caminhoEmLargura(vs[0], vs[3]);
-    check("BFS - caminho mínimo", idsOf(caminho),
-          {vs[0].getId(), vs[1].getId(), vs[2].getId(), vs[3].getId()});
-}
+//     auto caminho = g.caminhoEmLargura(vs[0], vs[3]);
+//     check("BFS - caminho mínimo", idsOf(caminho),
+//           {vs[0].getId(), vs[1].getId(), vs[2].getId(), vs[3].getId()});
+// }
 
-void testeDfsOrdemRecursiva() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 5);  // ids consecutivos
+// void testeDfsOrdemRecursiva() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 5);  // ids consecutivos
 
-    g.adicionarAresta(vs[0], vs[1]);  // 0 -> 1
-    g.adicionarAresta(vs[0], vs[2]);  // 0 -> 2
-    g.adicionarAresta(vs[1], vs[3]);  // 1 -> 3
-    g.adicionarAresta(vs[1], vs[4]);  // 1 -> 4
+//     g.adicionarAresta(vs[0], vs[1]);  // 0 -> 1
+//     g.adicionarAresta(vs[0], vs[2]);  // 0 -> 2
+//     g.adicionarAresta(vs[1], vs[3]);  // 1 -> 3
+//     g.adicionarAresta(vs[1], vs[4]);  // 1 -> 4
 
-    auto ordemDFS = g.buscaEmProfundidade(vs[0]);
-    // Esperado: 0,1,3,4,2 (seguindo ordem de inserção)
-    check("DFS recursiva - ordem esperada", idsOf(ordemDFS),
-          {vs[0].getId(), vs[1].getId(), vs[3].getId(), vs[4].getId(), vs[2].getId()});
-}
+//     auto ordemDFS = g.buscaEmProfundidade(vs[0]);
+//     // Esperado: 0,1,3,4,2 (seguindo ordem de inserção)
+//     check("DFS recursiva - ordem esperada", idsOf(ordemDFS),
+//           {vs[0].getId(), vs[1].getId(), vs[3].getId(), vs[4].getId(), vs[2].getId()});
+// }
 
-void testeComponentesDesconexosDfsCompleta() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 5);  // ids consecutivos
+// void testeComponentesDesconexosDfsCompleta() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 5);  // ids consecutivos
 
-    // componente 1-2-3
-    g.adicionarAresta(vs[0], vs[1]);
-    g.adicionarAresta(vs[1], vs[2]);
-    // componente 4-5
-    g.adicionarAresta(vs[3], vs[4]);
+//     // componente 1-2-3
+//     g.adicionarAresta(vs[0], vs[1]);
+//     g.adicionarAresta(vs[1], vs[2]);
+//     // componente 4-5
+//     g.adicionarAresta(vs[3], vs[4]);
 
-    auto ordemCompleta = g.buscaEmProfundidadeCompleta(vs[0]);
-    // Esperado: todos os vértices, incluindo componentes desconexos
-    check("DFS completa (componentes desconexos)", idsOf(ordemCompleta),
-          {vs[0].getId(), vs[1].getId(), vs[2].getId(), 0, vs[3].getId(), vs[4].getId()});
-}
+//     auto ordemCompleta = g.buscaEmProfundidadeCompleta(vs[0]);
+//     // Esperado: todos os vértices, incluindo componentes desconexos
+//     check("DFS completa (componentes desconexos)", idsOf(ordemCompleta),
+//           {vs[0].getId(), vs[1].getId(), vs[2].getId(), 0, vs[3].getId(), vs[4].getId()});
+// }
 
-void testeCiclo() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 3);
+// void testeCiclo() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 3);
 
-    g.adicionarAresta(vs[0], vs[1]);
-    g.adicionarAresta(vs[1], vs[2]);
-    g.adicionarAresta(vs[2], vs[0]);
+//     g.adicionarAresta(vs[0], vs[1]);
+//     g.adicionarAresta(vs[1], vs[2]);
+//     g.adicionarAresta(vs[2], vs[0]);
 
-    auto ordemBFS = g.buscaEmLargura(vs[0]);
-    check("BFS em ciclo", idsOf(ordemBFS), {vs[0].getId(), vs[1].getId(), vs[2].getId()});
+//     auto ordemBFS = g.buscaEmLargura(vs[0]);
+//     check("BFS em ciclo", idsOf(ordemBFS), {vs[0].getId(), vs[1].getId(), vs[2].getId()});
 
-    auto ordemDFS = g.buscaEmProfundidade(vs[0]);
-    check("DFS em ciclo", idsOf(ordemDFS), {vs[0].getId(), vs[1].getId(), vs[2].getId()});
-}
+//     auto ordemDFS = g.buscaEmProfundidade(vs[0]);
+//     check("DFS em ciclo", idsOf(ordemDFS), {vs[0].getId(), vs[1].getId(), vs[2].getId()});
+// }
 
-void testeSelfLoop() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 2);
+// void testeSelfLoop() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 2);
 
-    g.adicionarAresta(vs[0], vs[0]);  // self-loop
-    g.adicionarAresta(vs[0], vs[1]);
+//     g.adicionarAresta(vs[0], vs[0]);  // self-loop
+//     g.adicionarAresta(vs[0], vs[1]);
 
-    auto ordemBFS = g.buscaEmLargura(vs[0]);
-    check("BFS com self-loop", idsOf(ordemBFS), {vs[0].getId(), vs[1].getId()});
+//     auto ordemBFS = g.buscaEmLargura(vs[0]);
+//     check("BFS com self-loop", idsOf(ordemBFS), {vs[0].getId(), vs[1].getId()});
 
-    auto ordemDFS = g.buscaEmProfundidade(vs[0]);
-    check("DFS com self-loop", idsOf(ordemDFS), {vs[0].getId(), vs[1].getId()});
-}
+//     auto ordemDFS = g.buscaEmProfundidade(vs[0]);
+//     check("DFS com self-loop", idsOf(ordemDFS), {vs[0].getId(), vs[1].getId()});
+// }
 
-void testeVerticeIsolado() {
-    GrafoLista g(false, false, false, false, false, false);
-    auto vs = criarVertices(g, 1);
+// void testeVerticeIsolado() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     auto vs = criarVertices(g, 1);
 
-    auto ordemBFS = g.buscaEmLargura(vs[0]);
-    check("BFS - vértice isolado", idsOf(ordemBFS), {vs[0].getId()});
+//     auto ordemBFS = g.buscaEmLargura(vs[0]);
+//     check("BFS - vértice isolado", idsOf(ordemBFS), {vs[0].getId()});
 
-    auto ordemDFS = g.buscaEmProfundidade(vs[0]);
-    check("DFS - vértice isolado", idsOf(ordemDFS), {vs[0].getId()});
-}
+//     auto ordemDFS = g.buscaEmProfundidade(vs[0]);
+//     check("DFS - vértice isolado", idsOf(ordemDFS), {vs[0].getId()});
+// }
 
-void testeExcecaoVerticeInexistente() {
-    GrafoLista g(false, false, false, false, false, false);
-    Vertice v999(999, false, false);
-    bool lancou = false;
-    try {
-        auto r = g.buscaEmLargura(v999);
-    } catch (const std::invalid_argument&) {
-        lancou = true;
-    }
-    if (lancou)
-        cout << "[PASS] Exceção para vértice inexistente\n";
-    else {
-        cout << "[FAIL] Esperava exceção para vértice inexistente\n";
-        ++failures;
-    }
-}
+// void testeExcecaoVerticeInexistente() {
+//     GrafoLista g(false, false, false, false, false, false);
+//     Vertice v999(999, false, false);
+//     bool lancou = false;
+//     try {
+//         auto r = g.buscaEmLargura(v999);
+//     } catch (const std::invalid_argument&) {
+//         lancou = true;
+//     }
+//     if (lancou)
+//         cout << "[PASS] Exceção para vértice inexistente\n";
+//     else {
+//         cout << "[FAIL] Esperava exceção para vértice inexistente\n";
+//         ++failures;
+//     }
+// }
 
 // int main() {
 //     TesteDirecionado();
