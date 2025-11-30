@@ -125,6 +125,27 @@ Abra o terminal na raiz do projeto e utilize os comandos abaixo:
 
 -----
 
+### Exemplos de Resultados
+
+<div align="center">
+
+| Entrada | Saída (MST k=10) (Cores Aleatorias) |
+|:---:|:---:|
+| <img src="Assets/club_penguin_1.png" width="200"> | <img src="Assets/club_penguin_1_MSA_k10_rand.png" width="200"> |
+
+| Entrada | Saída (MST k=1000) (Com Bordas) |
+|:---:|:---:|
+| <img src="Assets/Mapa-brasil.jpeg" width="200"> | <img src="Assets/mapa_brasil_MST_k1000_CorReal.png" width="200"> |
+
+| Entrada | Saída (MSA k=20) (Cor Real) |
+|:---:|:---:|
+| <img src="Assets/relampago-mcqueen.png" width="200"> | <img src="Assets/relampago-mcqueen_MSA_k20_CorReal.png" width="200"> |
+
+</div>
+
+
+-----
+
 ## 📊 Comparativo: MST vs. MSA
 
 Conforme os experimentos realizados no artigo:
