@@ -62,7 +62,7 @@ private:
     }
 
     // LOGICA DE PROCESSAMENTO
-    uint64_t processarImagem(string caminhoImagem, int tipoAlgoritmo, double k, int minSize, bool coresAleatorias) {
+    uint64_t processarImagem(string caminhoImagem, int tipoAlgoritmo, double k, int minSize, bool coresAleatorias, bool comBordas) {
         
         cout << "\n[PROCESSANDO] Imagem: " << caminhoImagem << " | K=" << k << " | Min=" << minSize << endl;
 
@@ -115,6 +115,7 @@ private:
             ss << "assets/output/" << (tipoAlgoritmo == 1 ? "MST/" : "MSA/") << nomeBase << "_" << tagAlgoritmo 
                << "_k" << (int)k 
                << (coresAleatorias ? "_CorAleatoria" : "_CorReal") 
+               << (comBordas ? "_ApenasBordas" : "") 
                << ".ppm";
             
             string caminhoSaida = ss.str();
@@ -124,9 +125,12 @@ private:
             unsigned char* temp = stbi_load(caminhoImagem.c_str(), &w, &h, &c, 3);
             stbi_image_free(temp);
 
-            salvarImagemBordas(caminhoSaida, resultado, w, h);
+            if(comBordas){
+                salvarImagemBordas(caminhoSaida, resultado, w, h);
+            } else {
+                saveImageFromGrafo(caminhoSaida, grafoPintado, w, h);
+            }
 
-            //saveImageFromGrafo(caminhoSaida, grafoPintado, w, h);
             
             cout << "[SUCESSO] Salvo em: " << caminhoSaida << endl;
 
@@ -149,8 +153,10 @@ private:
         double k = lerDouble("Valor de K (limiar): ");
         int minSize = lerDouble("Tamanho Minimo (minSize): ");
         bool randColor = escolherCores();
+        bool borda = escolherBorda();
 
-        uint64_t tempo = processarImagem(path, alg, k, minSize, randColor);
+
+        uint64_t tempo = processarImagem(path, alg, k, minSize, randColor,borda);
 
         cout << "\n-> Tempo de execução: " << tempo << " milissegundos." << endl;
     }
@@ -165,15 +171,19 @@ private:
         double kIni = lerDouble("K Inicial: ");
         double kFim = lerDouble("K Final: ");
         double kPasso = lerDouble("Passo (Incremento): ");
-        int minSize = lerDouble("Tamanho Minimo (minSize): ");
+        int minSizeI = lerDouble("Tamanho Minimo (minSize) Inicial: ");
+        int minSizeF = lerDouble("Tamanho Minimo (minSize) Final: ");
+        int minSizePasso = lerDouble("Passo (Incremento): ");
+
         bool randColor = escolherCores();
+        bool borda = escolherBorda();
 
         cout << "\n--- INICIANDO BATERIA DE TESTES ---" << endl;
-        
         uint64_t tempoTotal = 0;
 
         for (double k = kIni; k <= kFim; k += kPasso) {
-            tempoTotal += processarImagem(path, alg, k, minSize, randColor);
+            for(int min = minSizeI; min <= minSizeF; min += minSizePasso)
+                tempoTotal += processarImagem(path, alg, k, min, randColor, borda);
         }
 
         cout << "\n-> Tempo médio de execução: " << (tempoTotal / kFim) << " milissegundos." << endl;
@@ -203,6 +213,16 @@ private:
         cout << "\nTipo de Saida:" << endl;
         cout << "0. Cores Reais (Media do segmento)" << endl;
         cout << "1. Cores Aleatorias (Debug de segmentos)" << endl;
+        cout << "Opcao: ";
+        cin >> op;
+        return (op == 1);
+    }
+
+    bool escolherBorda() {
+        int op;
+        cout << "\nGrafo apenas com bordas?" << endl;
+        cout << "0. Não. Gerar segmentos normais" << endl;
+        cout << "1. Sim. Gerar imagem com bordas" << endl;
         cout << "Opcao: ";
         cin >> op;
         return (op == 1);
