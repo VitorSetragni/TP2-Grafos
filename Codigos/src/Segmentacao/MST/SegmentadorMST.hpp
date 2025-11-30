@@ -7,7 +7,6 @@
 
 class SegmentadorMST : public ISegmentador {
 public:
-
     ResultadoSegmentacao segmentar(GrafoLista* grafo, double k, int minSize = 0) override;
 
 private:

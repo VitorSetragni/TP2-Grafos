@@ -52,7 +52,7 @@ vector<Pixel> extrairPixelsDoGrafo(GrafoLista* grafo, int largura, int altura);
 
 void salvarPPM(const string& nomeArquivo, int largura, int altura, const vector<Pixel>& pixels);
 
-void SaveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int altura);
+void saveImageFromGrafo(string nomeArquivo, GrafoLista* grafo, int largura, int altura);
 
 GrafoLista* gerarGrafoPintado(GrafoLista* grafoOriginal, ResultadoSegmentacao& resultado);
 

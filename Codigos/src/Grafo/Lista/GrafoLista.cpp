@@ -280,17 +280,23 @@ bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, double peso, s
     if (validarVertice(destino) && validarVertice(origem)) {
         NoVertice& procura = listaPrincipal.at(origem.getId());
 
+        // Adiciona Aresta: Origem -> Destino
+        NoVertice& noOrigem = listaPrincipal.at(origem.getId());
+        
+        // Ajusta flags na cópia do objeto vertice, não no nó do grafo
         destino.ponderado = arestaPonderada;
         destino.rotulado = arestaRotulada;
+        
+        noOrigem.adicionarAresta(destino, peso, rotulo);
 
-        // cout << "(Grafo lista) Inserindo:" << origem.toString() << " : " <<destino.toString()
-        // << endl;
-
-        procura.adicionarAresta(destino, peso, rotulo);
-
+        // Se não for direcionado, adiciona a volta: Destino -> Origem
         if (!direcionado) {
-            procura = listaPrincipal.at(destino.getId());
-            procura.adicionarAresta(origem, peso, rotulo);
+            NoVertice& noDestino = listaPrincipal.at(destino.getId());
+            
+            origem.ponderado = arestaPonderada;
+            origem.rotulado = arestaRotulada;
+            
+            noDestino.adicionarAresta(origem, peso, rotulo);
         }
 
         status = true;

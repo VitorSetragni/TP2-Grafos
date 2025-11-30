@@ -115,31 +115,42 @@ double SegmentadorMST::calcularMInt(double maxC1, int tamC1, double maxC2, int t
     return minInternalDifference;
 }
 
-// Função auxiliar para extrair e ordenar arestas do GrafoLista
+// Função auxiliar para buscar as arestas ordenadas
 vector<SegmentadorMST::ArestaSimples> SegmentadorMST::buscarListaDeArestasOrdenadas(GrafoLista* grafo) {
     vector<SegmentadorMST::ArestaSimples> arestas;
-    int numVertices = grafo->getQuantidadeVertices(); 
 
-    // Otimização de reserva de memória para evitar realocações (Grade 4-vizinhos ~ 2*N arestas)
+    if (!grafo) {
+        cout << "[ERRO CRITICO] Grafo nulo em buscarListaDeArestasOrdenadas!" << endl;
+        return arestas; 
+    }
+
+    int numVertices = grafo->getQuantidadeVertices();
+
+    if (numVertices == 0) return arestas;
+
     arestas.reserve(numVertices * 2);
 
-    // Itera sobre todos os vértices u
     for (int u = 0; u < numVertices; u++) {
-        NoVertice* noU = &grafo->listaPrincipal[u];
+        // Acesso direto seguro (assumindo que listaPrincipal é public)
+        NoVertice* noU = &(grafo->listaPrincipal[u]);
         
-        // Itera sobre a forward_list de adjacências
+        // DEBUG: Imprimir a quantidade de arestas do primeiro vértice para teste
+        if (u == 0) {
+            int count = 0;
+            for (const auto& a : noU->getArestas()) count++;
+        }
+
         for (const auto& aresta : noU->getArestas()) {
             int v = aresta.getId();
             double peso = aresta.getPeso();
 
-            // Pega apenas uma instância de uma aresta quando u < v para evitar duplicatas
+            // Lógica para pegar aresta única em grafo não direcionado
             if (u < v) {
                 arestas.push_back({u, v, peso});
             }
         }
     }
 
-    // Ordena as arestas por peso (crescente)
     sort(arestas.begin(), arestas.end());
     
     return arestas;
@@ -165,8 +176,14 @@ GrafoLista* SegmentadorMST::kruskalCondicional(GrafoLista* grafoEntrada, double 
         true,  // ponderado arestas
         false, // rotulado vértices
         false, // rotulado arestas
-        numVertices
+        0
     );
+
+    // Adiciona os vértices manualmente com IDs corretos (0 a N-1)
+    for(int i = 0; i < numVertices; i++) {
+        // Cria vértice i
+        floresta->adicionarVertice(Vertice(i, false, true, 0.0, ""));
+    }
 
     // Loop principal (Kruskal Condicionado)
     int arestasAdicionadas = 0;
@@ -191,7 +208,7 @@ GrafoLista* SegmentadorMST::kruskalCondicional(GrafoLista* grafoEntrada, double 
             int tamC2 = dsu.getTamanho(raizV);
 
             // Testa se a aresta é menor variabilidade interna dos componentes
-            if (w < calcularMInt(maxC1, tamC1, maxC2, tamC2, k)) {                
+            if (w <= calcularMInt(maxC1, tamC1, maxC2, tamC2, k)) {                
                 // Une no DSU
                 dsu.unite(raizU, raizV, w);
                 
