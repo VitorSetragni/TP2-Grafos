@@ -1,174 +1,146 @@
-# TP1 — Grafos 🧮
-
+# TP2 — Segmentação de Imagens com Grafos 🖼️
 
 ## 🎯 Objetivo
 
-Implementação de **estruturas e algoritmos de Grafos** para o Trabalho Prático 1 de **Teoria dos Grafos e Computabilidade**. O sistema permite criar grafos e operar sobre eles em **duas representações** — **Matriz de Adjacências** e **Lista de Adjacências** — oferecendo operações essenciais de construção, consulta e busca.
+Desenvolvimento e avaliação experimental de métodos de **segmentação de imagens baseados em grafos**. O projeto utiliza a infraestrutura de grafos desenvolvida anteriormente para implementar duas abordagens distintas:
 
-> **Escopo:** criação/remoção de vértices e arestas, consulta de vizinhos, **fecho transitivo direto e inverso**, **busca em profundidade (DFS)**, **busca em Largura (BFS)** e impressão do grafo.
+1.  **Árvores Geradoras Mínimas (MST)**: Utilizando o método de **Felzenszwalb e Huttenlocher** em grafos não direcionados.
+2.  **Arborescências Geradoras Mínimas (MSA)**: Utilizando o algoritmo de **Edmonds (Chu-Liu)** em grafos direcionados.
 
-<div align="center" style="">
-  <img src="Assets/ImgGrafo.png">
-</div>
+O objetivo central é comparar o desempenho computacional e as características visuais das regiões geradas por essas duas abordagens.
 
----
+-----
 
 ## 👨‍🎓 Integrantes da equipe
 
-* [**Augusto Stambassi Duarte**](https://github.com/Stambassi)
-* [**Davi Cândido de Almeida**](https://github.com/DaviKandido)
-* [**Gabriela de Assis dos Reis**](https://github.com/GabrielaReiss)
-* [**Lucas Carneiro Nassau Malta**](https://github.com/lucascarneiro1202)
-* [**João Pedro Torres**](https://github.com/Towers444)
-* [**Vitor Leite Setragni**](https://github.com/VitorSetragni)
-
+  - **Augusto Stambassi Duarte** — *Adaptação da biblioteca de grafos e modelagem de imagens em grafos e vice-versa*
+  - **Davi Cândido de Almeida** — *Implementação do algoritmo de Edmonds (MSA) e interface de visualização*
+  - **Gabriela de Assis dos Reis** — *Implementação e validação do segmentador em (MSA)*
+  - **João Pedro Torres** — *Validação de variantes, análise de experimentos e documentação*
+  - **Lucas Carneiro Nassau Malta** — *Implementação do algoritmo de Kruskal (MST)* e Interface de Segementadores
+  - **Vitor Leite Setragni** — *Interface de visualização, análise de experimentos e documentação*
 
 ## 👩‍🏫 Professor responsável
 
-* *Silvio Jamil Ferzoli Guimaraes*
+  - *Silvio Jamil Ferzoli Guimaraes*
 
----
+-----
+
+## 🧠 Fundamentação e Modelagem
+
+A imagem é modelada como um **grafo ponderado** onde cada pixel é um vértice.
+
+  - **Arestas:** Conectam pixels adjacentes (vizinhança-4: direita e abaixo).
+  - **Pesos:** Definidos pela **distância euclidiana** entre os vetores de cor RGB dos pixels vizinhos.
+  - **Direcionalidade:**
+      - **MST:** Aresta única não direcionada entre $(u, v)$.
+      - **MSA:** Arestas direcionadas $(u, v)$ e $(v, u)$ para permitir o fluxo direcionado.
+
+### Algoritmos Implementados
+
+1.  **MST (Kruskal):** Baseado em Kruskal. Decide iterativamente a fusão de componentes comparando o peso da aresta com a variação interna dos componentes ($Int(C)$). É eficiente e preserva bordas.
+2.  **MSA (Edmonds):** Seleciona a aresta de menor custo de entrada para cada vértice. Se ciclos são formados, eles são contraídos em super-vértices recursivamente até formar uma arborescência válida enraizada.
+
+-----
 
 ## 🗂 Estrutura do Projeto
 
+A estrutura foi estendida a partir do TP1 para suportar o módulo de segmentação:
+
 ```sh
-Codigos/
- ├─ Main.cpp                      # menu principal (seleção Matriz/Lista)
- ├─ Visao/
- │   ├─ MenuMatriz.cpp            # interface de operações para Matriz de Adjacências
- │   ├─ MenuLista.cpp             # interface de operações para Lista de Adjacências
- │   └─ MyIO.cpp                  # utilitários de entrada/validação
- ├─ EstruturaDeDados/
- │   └─ IGrafo.cpp                # interface/base com operações comuns
- │   └─ Lista               
- │     └─ GrafoLista.cpp          # implementação via lista 
- │   └─ Matriz
- │     └─ GrafoMatriz.cpp         # implementação via matriz
- │   └─ utils
- │     └─ utils.cpp               # Estruturas e definições utilitárias para o manejo dos algoritmos de busca em grafos
- │
- ├─ .clang-format                 # Formatador de codigo c++ via clang-format
- └─ libs
-    └─ /io.hpp                    # utilitários de I/O
+├── Makefile                         # Compilador
+├── assets/
+│   ├── input/                       # Coloque suas imagens de entrada aqui
+│   └── output/                      # As imagens geradas serão salvas aqui
+├── bin/ 
+├── libs/                            # Bibliotecas externas
+├── build/                           # Objetos de compilação (.o) 
+└── src/
+    ├─ Grafo/                        # Infraestrutura base de Grafos
+    │   ├─ GrafoLista.cpp            # Grafo via lista de adjacências (base do projeto)
+    │   ├─ Vertice.hpp               # Identificador, peso e rótulo do pixel
+    │   └─ NoVertice.hpp             # Nó da lista encadeada
+    │
+    ├─ Segmentacao/                  # Módulo de Segmentação
+    │   ├─ InterfaceImagem.cpp       # Carregamento (stb_image) e conversão Imagem <-> Grafo
+    │   ├─ ISegmentador.hpp          # Interface comum (contrato) para os algoritmos
+    │   ├─ MST/
+    │   │   └─ SegmentadorMST.cpp    # Implementação de Kruskal
+    │   └─ MSA/
+    │       └─ SegmentadorMSA.cpp    # Implementação de Edmonds
+    │
+    ├─ libs/
+    │   └─ std/stb_image.h           # Bibliotecas para leitura de imagens RGB
+    │
+    ├─ Visao/
+    │   ├─ MenuGrafoManager.cpp      # Interface de Operações em Grafo
+    │   ├─ MenuLista/Matriz.cpp      # Interface de Operações em Grafo Lista e Matriz
+    │   └─ MenuImageSegmentation.cpp # Interface de Operações em Segmentação de Imagem      
+    │                  
+    │
+    └─ main.cpp                      # Programa principal
 ```
 
----
+-----
 
-## 🚀 Como Executar
+### 📋 Pré-requisitos
 
-### Opção A — usando **npm scripts** (requer Node.js + g++)
+  * **Compilador:** É necessário ter o **GCC versão 13 ou superior** instalado.
+  * **Ferramenta:** `make` instalado no sistema.
 
-No diretório `Codigos/`:
 
-```bash
-# Instale dependências de dev (apenas para comandos utilitários)
-npm install
+### 🚀 Como Compilar e Executar
 
-# Compilar
-npm run build:linux   # Linux/macOS
-npm run build:win     # Windows (MinGW/WSL ou g++ disponível)
+Abra o terminal na raiz do projeto e utilize os comandos abaixo:
 
-# Executar
-npm run run:linux     # Linux/macOS
-npm run run:win       # Windows
+1.  **Compilar o projeto:**
+    O `Makefile` irá encontrar automaticamente todos os arquivos `.cpp`, criar as pastas necessárias dentro de `build/` e gerar o executável na pasta `bin/`.
 
-# Compilar + Executar 
-npm run dev:linux     # Linux/macOS
-npm run dev:win       # Windows
-```
+    ```bash
+    make
+    ```
 
-### Opção B — compilação manual (g++ / C++17)
+2.  **Executar o programa:**
+    Após a compilação bem-sucedida, o executável estará disponível na pasta `bin`.
 
-Ainda no diretório `Codigos/`:
+    ```bash
+    ./bin/programa
+    ```
 
-```bash
-# Linux/macOS
-mkdir -p bin && g++ Main.cpp -o bin/Main -std=c++17 -Wall -g && ./bin/Main
+### 🛠️ Comandos Adicionais
 
-# Windows (PowerShell)
-mkdir bin; g++ Main.cpp -o bin\\Main.exe -std=c++17 -Wall -g; .\\bin\\Main.exe
-```
+  * **Limpar arquivos temporários e executável:**
+    Remove a pasta `build` e o arquivo gerado em `bin`.
 
-> Caso esteja usando **VS Code**, há tarefas em `.vscode/tasks.json` para compilar/executar.
+    ```bash
+    make clean
+    ```
 
----
+  * **Recompilar tudo do zero (Clean + Build):**
+    Útil se você fez alterações profundas e quer garantir uma compilação limpa.
 
-## 🛠️ Tecnologias Utilizadas
+    ```bash
+    make re
+    ```
 
-* **C/C++ (C++17)**
-* **g++** para compilação
-* **VS Code** (configurações em `.vscode/`)
-* **Node + npm** (scripts utilitários via `package.json` usando `shx`)
+-----
 
----
+## 📊 Comparativo: MST vs. MSA
 
-## 📋 Funcionalidades Principais
+Conforme os experimentos realizados no artigo:
 
-* **Criação de grafos** com parâmetros:
+| Característica | MST (Kruskal) | MSA (Edmonds) |
+| :--- | :--- | :--- |
+| **Complexidade** | Quase linear (rápido) | Quadrática $O(nm)$ (mais lento) |
+| **Formato dos Segmentos** | Regiões compactas e coesas | Regiões alongadas e orientadas |
+| **Dependência de Raiz** | Não | Sim (estrutura hierárquica) |
+| **Preservação de Bordas** | Alta | Moderada |
 
-  * direcionado/não direcionado
-  * vértices ponderados e/ou rotulados
-  * arestas ponderadas e/ou rotuladas
-    
-* **Operações sobre o grafo** (menus `Matriz` e `Lista`):
+> **Conclusão:** A MST é superior em eficiência e fidelidade de bordas para tarefas gerais, enquanto a MSA oferece propriedades estruturais únicas úteis para análises que exigem hierarquia ou direcionalidade.
 
-  * Adicionar / Remover **Vértice**
-  * Adicionar / Remover **Aresta**
-  * **Consultar vizinhos** de um vértice
-  * **Fecho transitivo direto** e **inverso** de um vértice
-  * **Busca em Profundidade (DFS)**
-  * **Busca em Largura (BFS)**
-  * **Imprimir** a estrutura do grafo
-* **Dados de teste**: opção no menu para **criar um grafo de exemplo** rapidamente.
+-----
 
----
+## 📄 Licença e Disponibilidade
 
-## 🧭 Como usar (fluxo sugerido)
-
-1. Inicie o programa e escolha a representação (**Matriz** ou **Lista**).
-2. Use **Instanciar Grafo** para definir tamanho e propriedades (direcionado/ponderado/rotulado).
-3. **Adicione vértices** e **arestas**.
-4. Explore as consultas: **vizinhos**, **fechos transitivos**, **DFS** e **BFS**.
-5. Use **Imprimir Grafo** para inspecionar a estrutura.
-6. Ao final, **Remover Grafo** libera os recursos.
-
-## 🧩 Exemplos de uso (menu)
-
-* `1) Instanciar Grafo`
-* `2) Criar grafo de teste`
-* `3) Adicionar Vértice`
-* `4) Adicionar Aresta`
-* `7) Consultar Vizinhos de um Vértice`
-* `8) Fecho Transitivo Direto`
-* `9) Fecho Transitivo Inverso`
-* `10) Busca em Profundidade (DFS)`
-* `11) Busca em Largura (BFS)`
-* `12) Imprimir Grafo`
-* `13) Remove Grafo`
-
----
-
-## ✅ Requisitos
-
-* **g++** com suporte a **C++17**
-* **Windows/Linux/macOS**
-* (Opcional) **Node.js** para usar os *scripts* de build (`npm run`)
-
---- 
-
-## 🧪 Testes rápidos
-
-Após compilar, você pode optar por **Criar grafo de teste** no menu para validar as operações de impressão, vizinhança, DFS e BFS.
-
-## 🧹 Limpeza e Formatação
-
-Na pasta `Codigos/`:
-
-```bash
-npm run clean        # remove bin/
-npm run format-all   # format C++ com clang-format (se instalado)
-```
-
-## 📄 Licença
-
-Este projeto está licenciado sob a **GNU General Public License v3.0** — [ver arquivo `LICENSE`](./LICENSE).
+Este projeto foi desenvolvido para a disciplina de Grafos da PUC Minas.
+Os códigos e análises estão disponíveis no repositório oficial: [GitHub - TP2-Grafos](https://www.google.com/search?q=https://github.com/VitorSetragni/TP2-Grafos).
