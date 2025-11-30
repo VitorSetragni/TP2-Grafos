@@ -33,13 +33,11 @@
       "flags": "-Wall -std=c++17"
     },
     "scripts": {
-      "dev:win": "shx mkdir -p bin && g++ Main.cpp -o bin/Main.exe -Wall -std=c++17 -g && .\\bin\\Main.exe",
-      "dev:linux": "shx mkdir -p bin && g++ Main.cpp -o bin/Main -Wall -std=c++17 -g -fsanitize=address && ./bin/Main",
-      "build:linux": "shx mkdir -p bin && g++ Main.cpp -o bin/Main -Wall -std=c++17",
-
+      "dev:win": "shx mkdir -p bin && g++ src/Main.cpp -o bin/Main.exe -Wall -std=c++17 -g && .\\bin\\Main.exe",
+      "dev:linux": "shx mkdir -p bin && g++ src/Main.cpp -o bin/Main -Wall -std=c++17 -g -fsanitize=address && ./bin/Main",
+      "build:linux": "shx mkdir -p bin && g++ src/Main.cpp -o bin/Main -Wall -std=c++17",
       "run:linux": "./bin/Main",
       "run:win": ".\\bin\\Main.exe",
-
       "clean": "shx rm -rf bin/*",
       "format-all": "clang-format -i *.cpp && npm run formatVisao && npm run formatEstruturas && npm run formatMatriz && npm run formatListas",
       "formatVisao": "clang-format -i Visao/*.cpp",
