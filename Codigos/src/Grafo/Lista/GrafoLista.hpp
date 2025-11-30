@@ -38,16 +38,16 @@ public:
     // Manipulação de vértices
     bool adicionarVertice(Vertice v) override;
     bool adicionarVertice(Vertice v, std::string rotulo);
-    bool adicionarVertice(Vertice v, int peso);
-    bool adicionarVertice(Vertice v, int peso, std::string rotulo);
+    bool adicionarVertice(Vertice v, double peso);
+    bool adicionarVertice(Vertice v, double peso, std::string rotulo);
 
     bool removerVertice(Vertice v) override;
 
     // Manipulação de arestas
     bool adicionarAresta(Vertice origem, Vertice destino) override;
-    bool adicionarAresta(Vertice origem, Vertice destino, int peso) override;
+    bool adicionarAresta(Vertice origem, Vertice destino, double peso) override;
     bool adicionarAresta(Vertice origem, Vertice destino, std::string rotulo);
-    bool adicionarAresta(Vertice origem, Vertice destino, int peso, std::string rotulo);
+    bool adicionarAresta(Vertice origem, Vertice destino, double peso, std::string rotulo);
 
     bool removerAresta(Vertice origem, Vertice destino) override;
 

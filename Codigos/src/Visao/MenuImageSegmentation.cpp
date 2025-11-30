@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "../Visao/MenuLista.hpp" 
+#include "MenuLista.hpp" 
 #include "../Visao/MenuMatriz.hpp"
 #include "../libs/io/io.hpp"
 #include "../libs/io/MyIO.hpp"

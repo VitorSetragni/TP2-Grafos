@@ -146,10 +146,10 @@ bool GrafoLista::adicionarVertice(Vertice v, string rotulo) {
  *   Adiciona mais um vértice no Grafo
  *
  *   @param v Vertice a ser adicionado
- *   @param peso Inteiro a ser adicionado como peso do vértice
+ *   @param peso Double a ser adicionado como peso do vértice
  *   @return se ação foi concluida ou não
  */
-bool GrafoLista::adicionarVertice(Vertice v, int peso) {
+bool GrafoLista::adicionarVertice(Vertice v, double peso) {
     bool status = false;
     NoVertice vertice =
         NoVertice(this->verticePonderado, this->arestaPonderada, this->verticeRotulado,
@@ -166,11 +166,11 @@ bool GrafoLista::adicionarVertice(Vertice v, int peso) {
  *   Adiciona mais um vértice no Grafo
  *
  *   @param v Vertice a ser adicionado
- *   @param peso Inteiro a ser adicionado como peso do vértice
+ *   @param peso Double a ser adicionado como peso do vértice
  *   @param rotulo String a ser definida como rotulo do vértice
  *   @return se ação foi concluida ou não
  */
-bool GrafoLista::adicionarVertice(Vertice v, int peso, string rotulo) {
+bool GrafoLista::adicionarVertice(Vertice v, double peso, string rotulo) {
     bool status = false;
     NoVertice vertice =
         NoVertice(this->verticePonderado, this->arestaPonderada, this->verticeRotulado,
@@ -242,10 +242,10 @@ bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino) {
  *
  *   @param origem Vertice de partida da aresta
  *   @param destino Vertice de destino da aresta
- *   @param peso Inteiro do peso a ser adicionado
+ *   @param peso Double do peso a ser adicionado
  *   @return se ação foi concluida ou não
  */
-bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, int peso) {
+bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, double peso) {
     return adicionarAresta(origem, destino, peso, "");
 }
 
@@ -266,11 +266,11 @@ bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, string rotulo)
  *
  *   @param origem Vertice de partida da aresta
  *   @param destino Vertice de destino da aresta
- *   @param peso Inteiro do peso a ser adicionado
+ *   @param peso Double do peso a ser adicionado
  *   @param rotulo String do rotulo a ser adicionado
  *   @return se ação foi concluida ou não
  */
-bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, int peso, string rotulo) {
+bool GrafoLista::adicionarAresta(Vertice origem, Vertice destino, double peso, string rotulo) {
     bool status = false;
     if (validarVertice(destino) && validarVertice(origem)) {
         NoVertice& procura = listaPrincipal.at(origem.getId());

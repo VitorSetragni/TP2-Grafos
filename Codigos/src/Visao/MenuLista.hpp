@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "../EstruturaDeDados/Lista/GrafoLista.hpp"
+#include "../Grafo/Lista/GrafoLista.hpp"
 #include "../libs/io/io.hpp"
 #include "../libs/io/MyIO.hpp"
 

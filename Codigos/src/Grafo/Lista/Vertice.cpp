@@ -33,7 +33,7 @@ Vertice::Vertice(int id, bool rotulado, bool ponderado) : Vertice(id, rotulado, 
  *   @param peso Inteiro que define o peso
  *   @param rotulo String que define o rotulo
  */
-Vertice::Vertice(int id, int peso, string rotulo) : Vertice(id, true, true, peso, rotulo) {
+Vertice::Vertice(int id, double peso, string rotulo) : Vertice(id, true, true, peso, rotulo) {
 }
 
 /**
@@ -45,7 +45,7 @@ Vertice::Vertice(int id, int peso, string rotulo) : Vertice(id, true, true, peso
  *   @param peso Inteiro que define o peso
  *   @param rotulo String que define o rotulo
  */
-Vertice::Vertice(int id, bool rotulado, bool ponderado, int peso, string rotulo) {
+Vertice::Vertice(int id, bool rotulado, bool ponderado, double peso, string rotulo) {
     this->id = id;
     this->peso = peso;
     this->rotulo = rotulo;
@@ -82,7 +82,7 @@ int Vertice::getId() const {
     return this->id;
 }
 
-int Vertice::getPeso() const {
+double Vertice::getPeso() const {
     return this->peso;
 }
 

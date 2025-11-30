@@ -23,15 +23,15 @@ public:
               bool verticeRotulado, bool arestaRotulada, int id);
     NoVertice(bool verticePonderado, bool arestaPonderada,
               bool verticeRotulado, bool arestaRotulada,
-              int id, int peso, std::string rotulo);
+              int id, double peso, std::string rotulo);
     NoVertice(bool arestaPonderada, bool arestaRotulada, Vertice v);
 
     // Manipulação de arestas
     void appendAresta(const Vertice &v);
     void adicionarAresta(Vertice v);
-    void adicionarAresta(Vertice v, int peso);
+    void adicionarAresta(Vertice v, double peso);
     void adicionarAresta(Vertice v, std::string rotulo);
-    void adicionarAresta(Vertice v, int peso, std::string rotulo);
+    void adicionarAresta(Vertice v, double peso, std::string rotulo);
     void removerAresta(Vertice v);
 
     // Consultas

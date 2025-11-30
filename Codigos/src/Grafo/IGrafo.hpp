@@ -16,7 +16,7 @@ class IGrafo {
 
     // Métodos para manipulação
     virtual bool adicionarVertice(TVertice v) = 0;
-    virtual bool adicionarAresta(TVertice origem, TVertice destino, int peso) = 0;
+    virtual bool adicionarAresta(TVertice origem, TVertice destino, double peso) = 0;
     virtual bool adicionarAresta(TVertice origem, TVertice destino) = 0;
 
     // Métodos para remoção

@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "../IGrafo.hpp"
-#include "../utils/utils.hpp"
+#include "../../utils/utils.hpp"
 
 using namespace std;
 
@@ -118,7 +118,7 @@ bool GrafoMatriz::adicionarVertice(int v) {
     return adicionarVertice(v, 1, "");  // Peso padrão é 1 e rótulo padrão é string vazia
 }
 
-bool GrafoMatriz::adicionarVertice(int v, int peso) {
+bool GrafoMatriz::adicionarVertice(int v, double peso) {
     return adicionarVertice(v, peso, "");  // Rótulo padrão é string vazia
 }
 
@@ -126,7 +126,7 @@ bool GrafoMatriz::adicionarVertice(int v, string label) {
     return adicionarVertice(v, 1, label);  // Peso padrão é 1
 }
 
-bool GrafoMatriz::adicionarVertice(int v, int peso, string label) {
+bool GrafoMatriz::adicionarVertice(int v, double peso, string label) {
     // O novo vértice terá o índice do tamanho atual da matriz.
     int novoIndice = this->numVertices;
 
@@ -166,7 +166,7 @@ bool GrafoMatriz::adicionarAresta(int origem, int destino) {
     return adicionarAresta(origem, destino, 1);  // Peso padrão é 1
 }
 
-bool GrafoMatriz::adicionarAresta(int origem, int destino, int peso) {
+bool GrafoMatriz::adicionarAresta(int origem, int destino, double peso) {
     return adicionarAresta(origem, destino, peso, "");  // Rótulo padrão é string vazia
 }
 
@@ -174,7 +174,7 @@ bool GrafoMatriz::adicionarAresta(int origem, int destino, string label) {
     return adicionarAresta(origem, destino, 1, label);  // Peso padrão é 1
 }
 
-bool GrafoMatriz::adicionarAresta(int origem, int destino, int peso, string label) {
+bool GrafoMatriz::adicionarAresta(int origem, int destino, double peso, string label) {
     // Testar se os vértices existem, se o peso não é nulo e se a aresta JÁ NÃO EXISTE
     if (!verticeValido(origem) || !verticeValido(destino) || peso == 0 ||
         matrizAdjacencias[origem][destino] != 0) {
@@ -489,7 +489,7 @@ vector<int> GrafoMatriz::buscas(int v_inicial) const {
             for (int v = 0; v < numVertices; ++v) {
                 // Se existe aresta de u para v
                 if (matrizAdjacencias[u][v] != 0) {
-                    int peso_aresta = matrizAdjacencias[u][v];
+                    double peso_aresta = matrizAdjacencias[u][v];
                     // "Relaxamento": Tenta encurtar o caminho para o vizinho 'v'
                     if (distancias[u] != INFINITO && distancias[u] + peso_aresta < distancias[v]) {
                         distancias[v] = distancias[u] + peso_aresta;

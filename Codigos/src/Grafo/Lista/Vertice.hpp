@@ -6,7 +6,7 @@
 class Vertice {
 private:
     int id;
-    int peso;
+    double peso;
     std::string rotulo;
 
 public:
@@ -15,8 +15,8 @@ public:
 
     Vertice();
     Vertice(int id, bool rotulado, bool ponderado);
-    Vertice(int id, int peso, std::string rotulo);
-    Vertice(int id, bool rotulado, bool ponderado, int peso, std::string rotulo);
+    Vertice(int id, double peso, std::string rotulo);
+    Vertice(int id, bool rotulado, bool ponderado, double peso, std::string rotulo);
     Vertice(const Vertice& v);
 
     void setPeso(int p);
@@ -24,7 +24,7 @@ public:
     void setId(int id);
 
     int getId() const;
-    int getPeso() const;
+    double getPeso() const;
     std::string getRotulo() const;
 
     bool operator==(const Vertice& other) const;

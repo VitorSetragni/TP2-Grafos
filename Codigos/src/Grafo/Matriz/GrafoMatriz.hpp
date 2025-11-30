@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../utils/utils.hpp"
+#include "../../utils/utils.hpp"
 #include "../IGrafo.hpp"
 
 class GrafoMatriz : public IGrafo<int> {
@@ -50,14 +50,14 @@ class GrafoMatriz : public IGrafo<int> {
     int getQuantidadeArestas() const override;
 
     bool adicionarVertice(int v) override;
-    bool adicionarVertice(int v, int peso);
+    bool adicionarVertice(int v, double peso);
     bool adicionarVertice(int v, std::string label);
-    bool adicionarVertice(int v, int peso, std::string label);
+    bool adicionarVertice(int v, double peso, std::string label);
 
     bool adicionarAresta(int origem, int destino) override;
-    bool adicionarAresta(int origem, int destino, int peso) override;
+    bool adicionarAresta(int origem, int destino, double peso) override;
     bool adicionarAresta(int origem, int destino, std::string label);
-    bool adicionarAresta(int origem, int destino, int peso, std::string label);
+    bool adicionarAresta(int origem, int destino, double peso, std::string label);
 
     bool removerVertice(int v) override;
     bool removerAresta(int origem, int destino) override;

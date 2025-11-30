@@ -54,11 +54,11 @@ NoVertice::NoVertice(bool verticePonderado, bool arestaPonderada, bool verticeRo
  *   @param verticeRotulado Boleano que determina se o vértice é rotulado ou não
  *   @param arestaRotulada Boleano que determina se o aresta é rotulada ou não
  *   @param id Inteiro que define o id do vértice
- *   @param peso Inteiro que define o peso do vértice
+ *   @param peso Double que define o peso do vértice
  *   @param rotulo String que define o rotulo do vértice
  */
 NoVertice::NoVertice(bool verticePonderado, bool arestaPonderada, bool verticeRotulado,
-                     bool arestaRotulada, int id, int peso, string rotulo) {
+                     bool arestaRotulada, int id, double peso, string rotulo) {
     this->verticePonderado = verticePonderado;
     this->arestaPonderada = arestaPonderada;
     this->verticeRotulado = verticeRotulado;
@@ -102,9 +102,9 @@ void NoVertice::adicionarAresta(Vertice v) {
  *   Adiciona uma Aresta conectando o vértice desse Nó com o v, adicionado peso na aresta
  *
  *   @param v Vertice destino da aresta
- *   @param peso Inteiro do peso a ser adicionado
+ *   @param peso double do peso a ser adicionado
  */
-void NoVertice::adicionarAresta(Vertice v, int peso) {
+void NoVertice::adicionarAresta(Vertice v, double peso) {
     v.setPeso(peso);
     appendAresta(v);
 }
@@ -125,10 +125,10 @@ void NoVertice::adicionarAresta(Vertice v, string rotulo) {
  * aresta
  *
  *   @param v Vertice destino da aresta
- *   @param peso Inteiro do peso a ser adicionado
+ *   @param peso Double do peso a ser adicionado
  *   @param rotulo String do rotulo a ser adicionado
  */
-void NoVertice::adicionarAresta(Vertice v, int peso, string rotulo) {
+void NoVertice::adicionarAresta(Vertice v, double peso, string rotulo) {
     v.setPeso(peso);
     v.setRotulo(rotulo);
     appendAresta(v);

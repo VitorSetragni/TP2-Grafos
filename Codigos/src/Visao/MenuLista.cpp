@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../EstruturaDeDados/Lista/GrafoLista.hpp"
+#include "../Grafo/Lista/GrafoLista.hpp"
 #include "../libs/io/MyIO.hpp"
 #include "../libs/io/io.hpp"
 

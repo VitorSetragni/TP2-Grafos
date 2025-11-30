@@ -4,7 +4,7 @@
 #include <limits>
 #include <string>
 
-#include "../EstruturaDeDados/Matriz/GrafoMatriz.hpp"
+#include "../Grafo/Matriz/GrafoMatriz.hpp"
 #include "../libs/io/MyIO.hpp"
 #include "../libs/io/io.hpp"
 

@@ -6,7 +6,7 @@
 #include <limits>
 #include <iostream>
 
-#include "../EstruturaDeDados/Matriz/GrafoMatriz.hpp"
+#include "../Grafo/Matriz/GrafoMatriz.hpp"
 
 // Funções auxiliares usadas pelo menu
 int lerInteiro(const std::string& mensagem, int min, int max);

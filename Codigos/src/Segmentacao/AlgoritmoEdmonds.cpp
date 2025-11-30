@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 
 #include <vector>
 #include <iostream>
@@ -10,8 +10,8 @@
 #include <filesystem>
 
 
-#include "../Lista/GrafoLista.hpp"
-#include "../Matriz/GrafoMatriz.hpp"
+#include "../Grafo/Lista/GrafoLista.hpp"
+#include "../Grafo/Matriz/GrafoMatriz.hpp"
 
 using namespace std;
 

@@ -4,7 +4,7 @@
 #include "./Visao/MenuImageSegmentation.cpp" 
 #include "./Visao/MenuGrafoManager.cpp" 
 
-#include "./libs/io/io.hpp"
+#include "../libs/io/io.hpp"
 
 using namespace std;
 
