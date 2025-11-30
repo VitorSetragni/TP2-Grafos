@@ -5,8 +5,8 @@
 #include <string>
 
 #include "../Grafo/Matriz/GrafoMatriz.hpp"
-#include "../libs/io/MyIO.hpp"
-#include "../libs/io/io.hpp"
+#include "../../libs/io/MyIO.hpp"
+#include "../../libs/io/io.hpp"
 
 
 using namespace std;

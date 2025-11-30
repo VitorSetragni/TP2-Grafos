@@ -5,10 +5,13 @@
 #include "./Visao/MenuGrafoManager.cpp" 
 
 #include "../libs/io/io.hpp"
-
+#include "Segmentacao/InterfaceImagem.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]) {
+    GrafoLista* g = GrafoFromImagem("teste.png",false);
+
+    SaveImageFromGrafo("teste_refeita.ppm",g,512,512);
     try {
         int opcaoPrincipal = 0;
 

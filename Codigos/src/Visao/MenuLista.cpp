@@ -4,8 +4,9 @@
 #include <string>
 
 #include "../Grafo/Lista/GrafoLista.hpp"
-#include "../libs/io/MyIO.hpp"
-#include "../libs/io/io.hpp"
+#include "../../libs/io/io.hpp"
+#include "../../libs/io/MyIO.hpp"
+
 
 
 using namespace std;

@@ -107,6 +107,11 @@ GrafoLista::GrafoLista(bool simples, bool direcionado, bool vPonderado, bool aPo
 
 // Metodos de manipulação
 
+
+Vertice GrafoLista::getVertice(int i){
+    return listaPrincipal.at(i).vertice;   
+}
+
 /**
  *   Adiciona mais um vértice no Grafo
  *

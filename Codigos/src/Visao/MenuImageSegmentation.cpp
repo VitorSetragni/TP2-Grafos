@@ -3,8 +3,9 @@
 
 #include "MenuLista.hpp" 
 #include "../Visao/MenuMatriz.hpp"
-#include "../libs/io/io.hpp"
-#include "../libs/io/MyIO.hpp"
+#include "../../libs/io/io.hpp"
+#include "../../libs/io/MyIO.hpp"
+
 
 #define OUTPUT_PATH "/output/saida.png"
 #define K_VALUE 600

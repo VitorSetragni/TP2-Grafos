@@ -35,6 +35,9 @@ public:
     GrafoLista(bool simples, bool direcionado, bool vPonderado, bool aPonderada,
                bool vRotulado, bool aRotulada);
 
+    Vertice getVertice(int i);
+
+
     // Manipulação de vértices
     bool adicionarVertice(Vertice v) override;
     bool adicionarVertice(Vertice v, std::string rotulo);
