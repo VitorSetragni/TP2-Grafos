@@ -10,6 +10,27 @@ using namespace std;
 
 const double INF = numeric_limits<double>::max();
 
+// BFS Otimizada (Memória)
+void SegmentadorMSA::bfsMarcarComponente(const vector<vector<int>>& adj, int raiz, int idComponente, vector<int>& mapa, vector<bool>& visitado) {
+    queue<int> fila;
+    fila.push(raiz);
+    visitado[raiz] = true;
+    mapa[raiz] = idComponente;
+
+    while (!fila.empty()) {
+        int u = fila.front();
+        fila.pop();
+
+        for (int v : adj[u]) {
+            if (!visitado[v]) {
+                visitado[v] = true;
+                mapa[v] = idComponente;
+                fila.push(v);
+            }
+        }
+    }
+}
+
 // Núcleo Recursivo Otimizado (Lógica Tarjan para Ciclos)
 vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, vector<ArestaEdmonds>& arestas, int nivel) {
     
@@ -20,7 +41,7 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
 
     vector<int> arestasEscolhidas;
     
-    // --- Passo 1: Seleção Gulosa (O(E)) ---
+    // Passo 1: Seleção Gulosa (O(E))
     vector<int> menorArestaIdx(numVertices, -1);
     vector<double> menorPeso(numVertices, INF);
 
@@ -37,7 +58,7 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
         }
     }
 
-    // --- Passo 2: Detecção de Ciclos (Linear O(V)) ---
+    // Passo 2: Detecção de Ciclos (Linear O(V))
     vector<int> grupo(numVertices, -1);
     vector<int> visitado(numVertices, -1);
     vector<int> noCiclo(numVertices, -1);
@@ -83,7 +104,7 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
         if (v != raiz && visitado[v] != PRETO) visitado[v] = PRETO;
     }
 
-    // --- Passo 3: Base da Recursão (Sem ciclos) ---
+    // Passo 3: Base da Recursão (Sem ciclos)
     if (!temCiclo) {
         for (int i = 0; i < numVertices; i++) {
             if (i != raiz && menorArestaIdx[i] != -1) {
@@ -93,7 +114,7 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
         return arestasEscolhidas;
     }
 
-    // --- Passo 4: Contração ---
+    // Passo 4: Contração
     for (int i = 0; i < numVertices; i++) {
         if (grupo[i] == -1) {
             grupo[i] = contaGrupos++;
@@ -121,17 +142,18 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
         }
     }
 
-    // --- CHAMADA RECURSIVA ---
+    // Chamada recursiva
     int novaRaiz = grupo[raiz];
     
     // Limpa memória local antes de recursão profunda se possível (opcional, mas bom pra stack)
     vector<int> arestasRecursao = executarEdmondsRecursivo(numSuperVertices, novaRaiz, novasArestas, nivel + 1);
 
-    // --- Passo 5: Expansão (Otimizada com Map) ---
+    // Passo 5: Expansão (Otimizada com Map)
     vector<int> cicloRecebeuEntrada(numSuperVertices, -1);
 
     // Mapeia ID_Original -> Vértice_Destino_Real para acesso O(1)
     unordered_map<int, int> mapIdDestino;
+    
     // Otimização: Popula o mapa apenas se necessário ou iterando 'arestas' uma vez.
     // Como precisamos do destino real de IDs arbitrários, iteramos 'todas' as arestas deste nível uma vez.
     for(const auto& a : arestas) {
@@ -182,55 +204,72 @@ vector<int> SegmentadorMSA::executarEdmondsRecursivo(int numVertices, int raiz, 
     return arestasEscolhidas;
 }
 
-// --------------------------------------------------------------------------
 // Método Principal
-// --------------------------------------------------------------------------
 ResultadoSegmentacao SegmentadorMSA::segmentar(GrafoLista* grafo, double k, int minSize) {
     cout << "Iniciando Segmentacao com Edmonds (Tarjan/Linear)..." << endl;
+
+    if (grafo == nullptr) {
+        cerr << "[ERRO] Grafo nulo no segmentar do SegmentadorMSA." << endl;
+        return { {}, 0 };
+    }
     
     int n = grafo->getQuantidadeVertices();
     vector<ArestaEdmonds> todasArestas;
+
     // Reserva agressiva para evitar realloc
     todasArestas.reserve(grafo->getQuantidadeArestas() + n);
+
     int idCounter = 0;
 
-    // --- Extração Segura das Arestas ---
+    // Extração Segura das Arestas
     { 
         // Escopo para destruir listaAdjOriginal rapidamente
         vector<NoVertice> listaAdjOriginal = grafo->getlistaPrincipal();
-        for (int u = 0; u < n; u++) {
-            const auto& arestasForward = listaAdjOriginal[u].getArestas();
-            for (const auto& verticeDestino : arestasForward) {
-                int v = verticeDestino.getId();
-                double peso = verticeDestino.getPeso();
-                todasArestas.push_back({u, v, peso, idCounter++});
+
+        for (int vertice = 0; vertice < n; vertice++) {
+            const auto& arestas = listaAdjOriginal.at(vertice).getArestas();
+
+            for (const auto& aresta : arestas) {
+                int verticeAdjacente = aresta.getId();
+                double peso = aresta.getPeso();
+                todasArestas.push_back({vertice, verticeAdjacente, peso, idCounter++});
             }
         }
     } // Memória liberada aqui
 
-    // --- Raiz Virtual ---
+    // Incluir uma raiz virtual
     int raizVirtual = n; 
     double maxPeso = 0;
-    for(const auto& a : todasArestas) if(a.peso > maxPeso) maxPeso = a.peso;
+
+    // Preencher as arestas com peso máximo
+    for (const auto& a : todasArestas) {
+        if (a.peso > maxPeso) {
+            maxPeso = a.peso;
+        }
+    }
+
     double pesoRaiz = maxPeso + 1000.0;
 
+    // Adicionar arestas que partem da raiz para todos os outros vértices do grafo
     for (int i = 0; i < n; i++) {
         todasArestas.push_back({raizVirtual, i, pesoRaiz, idCounter++});
     }
 
-    cout << "Grafo preparado com " << todasArestas.size() << " arestas. Iniciando Recursao..." << endl;
+    cout << "Grafo preparado com " << todasArestas.size() << " arestas. Iniciando Recursão..." << endl;
 
-    // --- Executa Edmonds ---
+    // Executa Edmonds
     vector<int> arestasSelecionadasIds = executarEdmondsRecursivo(n + 1, raizVirtual, todasArestas, 0);
 
     cout << "Recursao finalizada. Gerando componentes..." << endl;
 
-    // --- Reconstrução (Economia de RAM) ---
+    // Reconstrução (Economia de RAM)
     vector<vector<int>> adj(n);
     
-    // Mapa auxiliar
+    // Preencher um mapa auxiliar que mapeia idAresta : aresta
     unordered_map<int, ArestaEdmonds> mapaArestas;
-    for(const auto& a : todasArestas) mapaArestas[a.idOriginal] = a;
+    for (const auto& aresta : todasArestas) {
+        mapaArestas[aresta.idOriginal] = aresta;
+    }
 
     int arestasAdicionadas = 0;
     
@@ -239,15 +278,17 @@ ResultadoSegmentacao SegmentadorMSA::segmentar(GrafoLista* grafo, double k, int 
     
     for (int id : arestasSelecionadasIds) {
         if (mapaArestas.find(id) == mapaArestas.end()) continue;
+
         ArestaEdmonds a = mapaArestas[id];
         
-        // Remove conexões da raiz virtual
+        // Ignore a aresta se um dos seus vértices adjacentes for a raiz virtual
         if (a.u == raizVirtual || a.v == raizVirtual) continue;
 
+        // Atualiza o peso mínimo e o peso máximo encontrado
         if (a.peso < minP) minP = a.peso;
         if (a.peso > maxP) maxP = a.peso;
 
-        // CORTE K
+        // Adiciona somente arestas menores que o corte K
         if (a.peso <= k) {
             adj[a.u].push_back(a.v);
             adj[a.v].push_back(a.u); // Não direcionado para coloração de componentes
@@ -263,7 +304,7 @@ ResultadoSegmentacao SegmentadorMSA::segmentar(GrafoLista* grafo, double k, int 
     cout << "Estatisticas: Peso Min=" << minP << " Max=" << maxP << " K=" << k << endl;
     cout << "Arestas mantidas: " << arestasAdicionadas << endl;
 
-    // --- Identificação de Componentes (BFS) ---
+    // Identificação de Componentes (BFS)
     ResultadoSegmentacao resultado;
     resultado.componentes.assign(n, -1);
     resultado.numComponentes = 0;
@@ -279,25 +320,4 @@ ResultadoSegmentacao SegmentadorMSA::segmentar(GrafoLista* grafo, double k, int 
     cout << "Total de Componentes: " << resultado.numComponentes << endl;
 
     return resultado;
-}
-
-// BFS Otimizada (Memória)
-void SegmentadorMSA::bfsMarcarComponente(const vector<vector<int>>& adj, int raiz, int idComponente, vector<int>& mapa, vector<bool>& visitado) {
-    queue<int> fila;
-    fila.push(raiz);
-    visitado[raiz] = true;
-    mapa[raiz] = idComponente;
-
-    while (!fila.empty()) {
-        int u = fila.front();
-        fila.pop();
-
-        for (int v : adj[u]) {
-            if (!visitado[v]) {
-                visitado[v] = true;
-                mapa[v] = idComponente;
-                fila.push(v);
-            }
-        }
-    }
 }
