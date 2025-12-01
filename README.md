@@ -129,15 +129,15 @@ Abra o terminal na raiz do projeto e utilize os comandos abaixo:
 
 | Entrada | Saída (MST k=10) (Cores Aleatorias) |
 |:---:|:---:|
-| <img src="Assets/club_penguin_1.png" width="200"> | <img src="Assets/club_penguin_1_MSA_k10_rand.png" width="200"> |
+| <img src="Assets/Originais/club_penguin_1.png" width="200"> | <img src="Assets/Resultados/club_penguin_1_MSA_k10_rand.png" width="200"> |
 
 | Entrada | Saída (MST k=1000) (Com Bordas) |
 |:---:|:---:|
-| <img src="Assets/Mapa-brasil.jpeg" width="200"> | <img src="Assets/mapa_brasil_MST_k1000_CorReal.png" width="200"> |
+| <img src="Assets/Originais/Mapa-brasil.jpeg" width="200"> | <img src="Assets/Resultados/mapa_brasil_MST_k1000_CorReal.png" width="200"> |
 
 | Entrada | Saída (MSA k=20) (Cor Real) |
 |:---:|:---:|
-| <img src="Assets/relampago-mcqueen.png" width="200"> | <img src="Assets/relampago-mcqueen_MSA_k20_CorReal.png" width="200"> |
+| <img src="Assets/Originais/relampago-mcqueen.png" width="200"> | <img src="Assets/Resultados/relampago-mcqueen_MSA_k20_CorReal.png" width="200"> |
 
 </div>
 
@@ -145,6 +145,8 @@ Abra o terminal na raiz do projeto e utilize os comandos abaixo:
 -----
 
 ## 📊 Comparativo: MST vs. MSA
+
+<div align="center">
 
 Conforme os experimentos realizados no artigo:
 
@@ -154,6 +156,9 @@ Conforme os experimentos realizados no artigo:
 | **Formato dos Segmentos** | Regiões compactas e coesas | Regiões alongadas e orientadas |
 | **Dependência de Raiz** | Não | Sim (estrutura hierárquica) |
 | **Preservação de Bordas** | Alta | Moderada |
+
+<br>
+</div>
 
 > **Conclusão:** A MST é superior em eficiência e fidelidade de bordas para tarefas gerais, enquanto a MSA oferece propriedades estruturais únicas úteis para análises que exigem hierarquia ou direcionalidade.
 
